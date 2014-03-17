@@ -1,0 +1,268 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+
+        <style>
+            #pantalla
+            {
+                margin-left: 150px;
+                width: 325px;
+                height: 509px;
+                border:1px solid black;
+            }
+
+            /* clases para link*/
+            #link
+            {
+                width:99%;
+                border-radius: 10px;
+                color:black;
+                height: 4%;
+                border: 1px solid black;
+            }
+
+            .link-text
+            {
+                padding-left: 1%;
+                width: 90%;
+                float:left;
+                height: 100%;
+            }
+            .link-img
+            {
+                width:8%;
+                float:left;
+                height: 100%;
+            }
+
+
+            /*clases para imagenes*/
+            #imagen, #imageButton
+            {
+                width: 20%;
+                height: 12%;
+            }
+            .imgApp, .imgButApp
+            {
+                width: 100%;
+                height:100%;
+                padding:0%;
+            }
+
+            /*clases para imagen con Link*/
+
+            #imagenAppLink
+            {
+                /*treure margin top*/
+                margin-top: 15px;
+                width: 99%;
+                height: 12%;
+                border:1px solid black;
+                border-radius: 10px;
+            }
+
+            .imagenLink
+            {
+                height: 100%;
+                width: 20%;
+                float:left;
+            }
+
+            .linkImg
+            {
+                float:left;
+                height: 100%;
+                width: 80%;
+            }
+
+            .link-textApp
+            {
+                margin-top: 8%;
+                padding-left: 1%;
+                width: 90%;
+                float:left;
+                height: 25%;
+            }
+
+            .link-imgApp
+            {
+                margin-top: 8%;
+                width:9%;
+                float:left;
+                height: 25%;
+            }
+
+            /*clases pata imagen con titular*/
+            #lector
+            {
+                /*treure margin top*/
+                margin-top: 15px;
+                width: 99%;
+                height: 12%;
+                border:1px solid black;
+                border-radius: 10px;
+            }
+            .imagenTit
+            {
+                height: 100%;
+                width: 20%;
+                float:left;
+            }
+            .encabezado
+            {
+                width: 80%;
+                height: 100%;
+                float:left;
+            }
+            .titulo
+            {
+                padding-top: 3%;
+            }
+            .titulo,.resumen
+            {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="pantalla">
+            <!--
+            <div id ="link">
+                <a class="link-text" href="">link</a>
+                <div class="link-img icon-chevron-right"></div>
+            </div>
+
+            <div id = "imagen">
+                <img class = "imgApp" src = "Imagenes/editaImagen.png"/>
+            </div>
+
+
+            <div id = "imageButton">
+                <img class= "imgButApp btn" src = "Imagenes/editaImagen.png"/>
+            </div>
+
+            <div id = "imagenAppLink">
+                <div class= "imagenLink">
+                    <img class = "imgAppLink" src = "Imagenes/editaImagen.png"/>
+                </div>
+                <div class ="linkImg">
+                    <div class="link-textApp">	
+                        <a href="">link</a>
+                    </div>
+                    <div class="link-imgApp icon-chevron-right"></div>
+                </div>
+            </div>
+
+            <div id = "lector">
+                <img class="imagenTit" src = "Imagenes/editaImagen.png"/>
+                <div class="encabezado">
+                    <div class="titulo">Titulo</div>
+                    <div class="resumen">Esto es un resumen muy muy muy muy largo</div>
+                </div>
+            </div>
+            -->
+            <style>
+                #cap
+                {
+                    width:100%;
+                    height:15%;
+                    background-image: linear-gradient(rgb(109, 179, 242) 0%, rgb(84, 163, 238) 50%, rgb(54, 144, 240) 51%, rgb(30, 105, 222) 100%);
+                }
+                #menuCap
+                {
+                    height: 100%;
+                    width:19.5%;
+                    float:left;
+                    border-right: 1px solid blue;
+                }
+                #tituloCap
+                {
+                    height: 100%;
+                    width:60%;
+                    float:left;
+                }
+                #tituloCap > div
+                {
+                    width:100%;
+                    text-align: center;
+                    font-size: 30px;
+                    margin-top: 20px;
+                    color:black;
+                }
+                #updateCap
+                {
+                    height: 100%;
+                    width: 100%;
+                    width:19.5%;
+                    border-left: 1px solid blue;
+                    float:left;
+                }
+                #ic1,#ic2
+                {
+                    margin-top:10px;
+                    margin-left:8px;
+                    width:70%;
+                    height: 70%;
+                    border:1px solid blue;
+                }
+            </style>
+            <div id="cap">
+                <div id="menuCap">
+                    <div id="ic1"></div>
+                </div>
+                <div id="tituloCap">
+                    <div>Titulo App</div>
+                </div>
+                <div id="updateCap">
+                    <div id="ic2"></div>
+                </div>
+            </div>
+            
+           <!-- <style>
+                .linkFotoDefault
+                {
+                    display:block; 
+                    width: 100%; 
+                    height: 18%;
+                    border-bottom:1px solid blue;
+                    position: relative;
+                    padding: 3% 0%;
+                }
+                .imgLinkFotoDefault
+                {
+                    float:left; 
+                    width: 30%; 
+                    height: 100%;
+                }    
+                .textLinkFotoDefault
+                {
+                    float:left; 
+                    width: 60%; 
+                    height: 100%; 
+                }  
+
+                .iconLinkFotoDefault
+                {
+                    width: 10%; 
+                    height: 16px;  
+                    margin-top: 10%;  
+                }          
+
+            </style>
+            
+            <a class="linkFotoDefault">
+                <img src="Imagenes/editaImagen.png" class="imgLinkFotoDefault"/>
+                <span class="textLinkFotoDefault">
+                     
+                </span>
+                <div class="icon-chevron-right iconLinkFotoDefault">
+                    
+                </div>
+            </a>-->
+            
+        </div>
+    </body>
+</html>

@@ -1,0 +1,10 @@
+"DROPBOX":
+
+  *Característiques:
+	- Límit Tamany Usuaris
+	- Càrrega - descàrrega Fitxers
+	- Gestió Carpetes
+	- 
+  
+  *Estructura:
+  	-Usuaris 

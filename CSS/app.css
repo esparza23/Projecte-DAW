@@ -1,0 +1,454 @@
+body {
+	margin: 0;
+}
+
+.container-liquid {
+	padding: 0 15px;
+	margin: 0 auto;
+}
+
+.logSig
+{
+	width:70%;
+}
+
+.logSigTitle
+{
+	text-align: center;
+}
+.cond
+{
+	font-size: 12px;
+}
+
+#form1
+{
+}
+#form2
+{
+	box-sizing:border-box;
+	padding-left: 25px;
+	border-left:2px solid black;
+}
+.misErr
+{
+	text-align: center;
+}
+#colIz
+{
+	min-height: 400px;
+	height: 100%;
+	box-sizing:border-box;
+	overflow: hidden;
+}
+#colDer
+{
+	min-height: 400px;
+	height: 100%;
+}
+
+#infoLogin
+{
+	height: 400px;
+	/*background-color: #8dcdff;*/
+	width:300px;
+}
+#infoCloud
+{
+	height: 1000px;
+	/*background-color: #8dcdff;*/
+}
+#imgLogo
+{
+	font-size: 250px;
+}
+#imgInfo1
+{
+	font-size: 100px;
+}
+#imgInfo2
+{
+	font-size: 100px;
+}
+#imgInfo3
+{
+	font-size: 150px;
+}
+#imgInfo4
+{
+	font-size: 180px;
+}
+
+.info
+{
+	margin-bottom: 20px;
+}
+@media(max-width: 991px){
+	#colIz
+	{
+		height: 400px;
+	}
+	#colDer
+	{
+		height: 400px;
+	}
+}
+
+@media(max-width: 767px){
+}
+/* PARTE VISOR TEXTO */
+#modalText
+{
+	width:100%;
+	height:100%;
+}
+#contText
+{
+	width:700px;
+	height:520px;
+	text-align: center;
+}
+.modal-Text
+{
+	padding:0;
+	margin:0;
+	width:100%;
+	height:100%;
+}
+#text
+{
+	width:100%;
+	height:90%;
+	margin: auto;
+	min-height: 90%;
+	max-height:90%; 
+	min-width:100%;
+	max-width:100%; 
+}
+
+
+
+/* PARTE VISOR PDF */
+#modalPDF
+{
+	width:100%;
+	height:100%;
+}
+#contPDF
+{
+	width:100%;
+	height:100%;
+	text-align: center;
+}
+.modal-PDF
+{
+	padding:0;
+	margin:0;
+	width:100%;
+	height:100%;
+}
+#PDFviewer
+{
+	width:100%;
+	height:90%;
+}
+
+
+/* PARTE VISOR IMAGENES */
+#contIMG
+{
+	text-align: center;
+}
+.modal-IMG
+{
+}
+
+
+/* PARTE REPRODUCTOR VIDEO */
+#contVid
+{
+	width:700px;
+	height:520px;
+	text-align: center;
+}
+.modal-vid
+{
+	width:700px;
+	height:520px;
+}
+#video
+{
+	width:640px;
+	height:480px;
+}
+
+/* PARTE MODAL RES */
+#contRes
+{
+	width:700px;
+	height:520px;
+	text-align: center;
+}
+.modal-res
+{
+	width:700px;
+	height:520px;
+}
+#res
+{
+	width:640px;
+	height:480px;
+}
+
+/* PARTE REPRODUCTOR MUSICA */
+#repMusica
+{
+	box-sizing:border-box;
+	border-top: 2px solid #1D1D1D;
+	position: absolute;
+	width:100%;
+	bottom: 0;
+	opacity:0;
+	text-align: center;
+}
+#audio
+{
+	margin:auto;
+	display:none;
+	width:50%;
+	float:left;
+	margin-top: 10px;
+}
+
+#closeMus
+{
+	margin-left: 15px;
+	float:right;
+	display:none;
+}
+
+#backMus,#forMus
+{
+	margin-left: 15px;
+	float:left;
+	display:none;
+}
+
+#closeMus,#closeVid,#closeIMG,#closePDF,#closeText,#closeRes,#backMus,#forMus
+{
+	position: relative;
+	font-size: 30px;
+	cursor: pointer;
+}
+
+/*MENU CONTEXTUAL*/
+#menuCont
+{
+	/*border: 2px solid black;*/
+	width:140px;
+	padding:5px;
+	opacity:0;
+	position: absolute;
+
+}
+#menuCont ul 
+{
+	list-style: none;
+	width: 120px;
+	margin-left: -20px;
+}
+.iconMenu
+{
+	float:left;
+	width:30px;
+	height:36px;
+}
+
+.iconMenu2
+{
+	float:left;
+	width:40px;
+	height:36px;
+}
+
+#menuCont ul li
+{
+	width: 120px;
+}
+
+.butMenu
+{
+	display: inline-block;
+	width: 120px;
+}
+
+.spanMen
+{
+	float:left;
+	margin-left: 10px;
+}
+
+/* MODALES NUEVA CARPETA Y NUEVO FICHERO*/
+.modalTit
+{
+	margin-top: 10px;
+	width:55%;
+}
+
+#nombreFich,#nombreCarp
+{
+	margin-top: 10px;
+	width:70%;
+}
+.modal-carp,.modal-fich
+{
+	height: 200px;
+	width:400px;
+}
+#contCarp,#contFich
+{
+	height: 100%;
+	width:100%;
+}
+.butIzq
+{
+	
+	width: 50%;
+	float:left;
+	height: 50px;
+	margin-top: 20px;
+}
+.butDer
+{
+	width: 50%;
+	float:right;
+	height: 50px;
+	margin-top: 20px;
+}
+
+/* FITXERS */
+#llistaFitx li
+{
+	width: 100%;
+	padding-top: 5px;
+	height: 50px;
+	list-style: none;
+}
+
+#llistaFitx .ui-selecting 
+{ 
+	background: #FECA40; 
+}
+#llistaFitx .ui-selected 
+{ 
+	background: #F39814; 
+	color: white; 
+}
+#llistaFitx 
+{ 
+	list-style-type: none; margin: 0; padding: 0; width: 100%;
+}
+
+#cont
+{
+	height: 400px;
+	text-align: center;
+}
+
+/* NAVEGACIO*/
+
+.header
+{
+	background-image: url(../images/iconFiles/folder.png);
+	width: 25px;
+	height: 25px;
+}
+.activeHeader
+{
+	background-image: url(../images/iconFiles/folder.png);
+	width: 25px;
+	height: 25px;
+}
+
+
+#fitx
+{
+	float:left;
+	margin-left: 30px;
+	width:45%;
+	/*height: 330px;*/
+	height: 550px;
+	overflow:scroll;
+}
+.spanNomNav
+{
+	float:left;
+}
+.spanNomNav:hover
+{
+	cursor: pointer;
+	color:blue;
+}
+.butNav
+{
+	width:80%;
+}
+.imgNav
+{
+	float:left;
+	margin-left: 15px;
+	margin-right: 15px;
+	width:29px;
+	height:36px;
+}
+
+/* PARTE CONTRRLES SUPERIOREs*/
+
+#fileUpload
+{
+	display:none;
+}
+
+/* D&D*/
+.active
+{
+	background-color: #35ff26;
+}
+.hover
+{
+	background-color: #416dff;
+}
+
+
+
+#jQ-menu
+{
+	float:left;
+	width:20%;
+	background-color: #eeeeee;
+	height: 550px;
+}
+.folder
+{
+	float:left;
+	margin-right: 15px;
+}
+
+#jQ-menu span {
+	float:left;
+	list-style-type: none;
+}
+#jQ-menu ul {
+	clear:both;
+	width:100%;
+	float:left;
+	list-style-type: none;
+}
+
+#jQ-menu a, #jQ-menu li {
+	width:100%;
+	float:left;
+	color: gray;
+	text-decoration: none;
+	padding-bottom: 3px;
+}
