@@ -205,7 +205,7 @@ body {
 {
 	box-sizing:border-box;
 	border-top: 2px solid #1D1D1D;
-	position: absolute;
+	position: fixed;
 	width:100%;
 	bottom: 0;
 	opacity:0;
@@ -215,7 +215,7 @@ body {
 {
 	margin:auto;
 	display:none;
-	width:50%;
+	width:70%;
 	float:left;
 	margin-top: 10px;
 }
@@ -226,15 +226,26 @@ body {
 	float:right;
 	display:none;
 }
+#butBack,#butFor
+{
+	float:left;
+	text-align: center;
+}
 
 #backMus,#forMus
 {
-	margin-left: 15px;
-	float:left;
-	display:none;
+	position: relative;
+	font-size: 20px;
+	cursor: pointer;
 }
 
-#closeMus,#closeVid,#closeIMG,#closePDF,#closeText,#closeRes,#backMus,#forMus
+.imgOp
+{
+	height: 36px;
+	width: 36px;
+}
+
+#closeMus,#closeVid,#closeIMG,#closePDF,#closeRes
 {
 	position: relative;
 	font-size: 30px;

@@ -17,6 +17,11 @@
 		<script src="Scrollbar/jquery.mousewheel.js" type="text/javascript"></script>
 		<script src="JS/utilidadesMenu.js" type="text/javascript"></script>
 		<script src="JS/home.js" type="text/javascript"></script>
+		<script src="JS/reproductorMusica.js" type="text/javascript"></script>
+		<script src="JS/reproductorVideo.js" type="text/javascript"></script>
+		<script src="JS/reproductorFotos.js" type="text/javascript"></script>
+		<script src="JS/editorTextos.js" type="text/javascript"></script>
+		<script src="JS/homeEvents.js" type="text/javascript"></script>
 		<script src="JS/fileTypes.js" type="text/javascript"></script>
 		<script src="JS/navigator.js" type="text/javascript"></script>
 
@@ -72,9 +77,6 @@
 					<button id="logout" type="button" class="btn btn-default btn-lg">
 						<img src="/images/logOut.png" class="iconMenu"> 
 					</button>
-					<button id="butDir" type="button" class="btn btn-default btn-lg">
-						<img src="/images/rotate.png" class="iconMenu"> 
-					</button>
 				</div>
 				<div id="jQ-menu">
 					<ul>
@@ -129,11 +131,19 @@
 		<div id="modalVideo" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"  data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-sm modal-vid">
 				<div id="contVid" class="modal-content">
-					<span id="closeVid" class="glyphicon glyphicon-remove-circle"></span>
+					<button id="closeVid" type="button" class="btn btn-default">
+						<img src="/images/close.png" class="imgOp"> 
+					</button>
 					<video id="video"  controls>
 					  <source id="vid" src="" type="">
 					Your browser does not support the video tag.
 					</video>
+					<button id="butBackVid" class="btn btn-default">
+						<span class="glyphicon glyphicon-backward"></span>
+					</button>
+					<button id="butForVid" class="btn btn-default">
+						<span class="glyphicon glyphicon-forward"></span>
+					</button>
 				</div>
 			</div>
 		</div>
@@ -141,12 +151,20 @@
 		<div id="modalIMG"class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-sm modal-IMG">
 				<div id="contIMG" class="modal-content">
-					<span id="closeIMG" class="glyphicon glyphicon-remove-circle"></span>
+					<button id="closeIMG" type="button" class="btn btn-default">
+						<img src="/images/close.png" class="imgOp"> 
+					</button>
 					<div class="form-group">
 						<label for="exampleInputEmail1">Imagen</label>
 						<div>
 							<img id="imagen" src="" alt="" class="img">
 						</div>
+						<button id="butBackPic" class="btn btn-default">
+							<span class="glyphicon glyphicon-backward"></span>
+						</button>
+						<button id="butForPic" class="btn btn-default">
+							<span class="glyphicon glyphicon-forward"></span>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -155,7 +173,9 @@
 		<div id="modalPDF"class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-sm modal-PDF">
 				<div id="contPDF" class="modal-content">
-					<span id="closePDF" class="glyphicon glyphicon-remove-circle"></span>
+					<button id="closePDF" type="button" class="btn btn-default">
+						<img src="/images/close.png" class="imgOp"> 
+					</button>
 					<div class="form-group">
 						<label for="exampleInputEmail1">PDF</label>
 						<div>
@@ -169,7 +189,12 @@
 		<div id="modalText"class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-sm modal-Text">
 				<div id="contPDF" class="modal-content">
-					<span id="closeText" class="glyphicon glyphicon-remove-circle"></span>
+					<button id="save" type="button" class="btn btn-default">
+						<img src="/images/save.png" class="imgOp"> 
+					</button>
+					<button id="closeText" type="button" class="btn btn-default">
+						<img src="/images/close.png" class="imgOp"> 
+					</button>
 					<div class="form-group">
 						<label for="exampleInputEmail1">Text</label>
 						<div>
@@ -183,7 +208,9 @@
 		<div id="modalRes" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"  data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-sm modal-res">
 				<div id="contRes" class="modal-content">
-					<span id="closeRes" class="glyphicon glyphicon-remove-circle"></span>
+					<button id="closeRes" type="button" class="btn btn-default">
+						<img src="/images/close.png" class="imgOp"> 
+					</button>
 					<h1>No hay vista previa de este elemento</h1>
 				</div>
 			</div>
@@ -191,13 +218,19 @@
 
 
 		<div id="repMusica">
-			<span id="backMus" class="glyphicon glyphicon-backward"></span>
-			<span id="forMus" class="glyphicon glyphicon-forward"></span>
+			<button id="butBack" class="btn btn-default">
+				<span id="backMus" class="glyphicon glyphicon-backward"></span>
+			</button>
+			<button id="butFor" class="btn btn-default">
+				<span id="forMus" class="glyphicon glyphicon-forward"></span>
+			</button>
 			<audio id="audio" controls >
 			  	<source id="music" src="" type="">
 				Your browser does not support the audio element.
 			</audio>
-			<span id="closeMus" class="glyphicon glyphicon-remove-circle"></span>
+			<button id="closeMus" type="button" class="btn btn-default">
+				<img src="/images/close.png" class="imgOp"> 
+			</button>
 		</div>
 
 		<div id="menuCont">

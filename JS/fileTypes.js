@@ -1,7 +1,5 @@
 var types = new Array("ai","aspx","bmp","c","cpp","css","dmg","doc","docx","exe","gif","h","html","iso","java","jpg","mp3","mp4","odp","pdf",
 	"php","png","ppt","psd","rar","sql","tgz","txt","xls","xlsx","xml","zip","js","odt","jpeg");
-var songs;
-var indexSong;
 
 //Funcion que devuelve la extension de un archivo.Del punto al final de la cadena de un string
 function extension(file)
@@ -35,6 +33,8 @@ function creaArchivos(data)
 	var i =0;
 	//alert(carp[0]);
 	songs =  new Array();
+	videos = new Array();
+	pictures = new Array();
 	for(val in carp[0])
 	{
 		//Recorremos todo el array 
@@ -206,7 +206,7 @@ function creaArchivos(data)
 		}
 		i++;
 	}		
-	alert(songs);
+	alert(songs+videos+pictures);
 
 	$("#llistaFitx").selectable({
 		cancel: "span,.cancel,.glyphicon",
@@ -351,6 +351,7 @@ function pdf(div,ruta,nom,tipo,tamany)
 
 function video(div,ruta,nom,tipo,tamany)
 {
+	videos.push(ruta+nom);
 	div.append
 	(
 		$(document.createElement("li"))
@@ -373,6 +374,7 @@ function video(div,ruta,nom,tipo,tamany)
 					.attr("id","span-"+nom)
 					.text(nom+"-"+tamany)
 					.click(function(event) {
+						indexVids = videos.indexOf(ruta+nom);
 						$("#vid").attr("src",ruta+event.target.id.replace("span-","").replace("img-","")).attr("type","video/mp4");
 						$("#video").load();
 						setTimeout(function(){
@@ -425,7 +427,8 @@ function audio(div,ruta,nom,tipo,tamany)
 					.attr("id","span-"+nom)
 					.text(nom+"-"+tamany)
 					.click(function(event) {
-						alert(songs.indexOf(ruta+nom));
+						//alert(songs.indexOf(ruta+nom));
+						indexSong = songs.indexOf(ruta+nom);
 						$("#repMusica").animate({
 							"height": "50px",
 							"opacity": 1},
@@ -520,6 +523,7 @@ function text(div,ruta,nom,tipo,tamany)
 
 function imagen(div,ruta,nom,tipo,tamany)
 {
+	pictures.push(ruta+nom);
 	div.append
 	(
 		$(document.createElement("li"))
@@ -542,33 +546,9 @@ function imagen(div,ruta,nom,tipo,tamany)
 					.attr("id","span-"+nom)
 					.text(nom+"-"+tamany)
 					.click(function(event) {
+						indexPic = pictures.indexOf(ruta+nom);
 						//archivos(event.target.id);
-						$.ajax({
-					    	type: "POST",
-					       	url: "PHP/tamanoImagen.php",
-					       	data: "fichero="+event.target.id.replace("span-","").replace("img-",""),
-					       	dataType: "html",
-					       	error: function()
-					       	{
-					        	alert("error petición ajax");
-					       	},
-					       success: function(data)
-					       	{ 
-					       		var dimensions = data.split("/");
-					       		var w = parseInt(dimensions[0]);
-					       		var h = parseInt(dimensions[1]);
-					       		//alert(h+" - "+w);
-					       		do
-					       		{
-					       			h/=1.5;
-					       			w/=1.5;
-					       		}while(h>600 || w>600);
-					       		alert(ruta);
-								$("#imagen").attr("src",ruta+event.target.id.replace("span-","").replace("img-",""))
-											.attr("width",w)
-											.attr("height",h);
-					       	}
-				    	});
+						solicitarTamanoImagen(ruta+nom);
 					})
 
        				.draggable({ 
