@@ -1,0 +1,9 @@
+
+FTP host name	"savecloud.net46.net"
+FTP user name	"a1174599"
+FTP password = "ce3453275";
+
+$mysql_host = "mysql2.000webhost.com";
+$mysql_database = "a1174599_cloud";
+$mysql_user = "a1174599_cloud";
+$mysql_password = "ce3453275";

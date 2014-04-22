@@ -11,9 +11,9 @@
 
 		<link rel="stylesheet" type="text/css" href="Bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="Jquery/jquery-ui-1.10.3.css">
-		<link rel="stylesheet" type="text/css" href="css/app.css">
+		<link rel="stylesheet" type="text/css" href="CSS/app.css">
 		<link rel="stylesheet" type="text/css" href="Scrollbar/perfect-scrollbar.css">
-		<link rel="stylesheet" type="text/css" href="css/flaticon.css">
+		<link rel="stylesheet" type="text/css" href="CSS/flaticon.css">
 	</head>
 	<body>
 		<div class="container-liquid">

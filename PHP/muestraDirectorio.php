@@ -1,6 +1,7 @@
 <?php 
     session_start();
     include "funciones.php";
+    include "tamanoDir.php";
     $correo =  $_SESSION['nom'];
     $carpetaActual = $_SESSION['carpetaActual'];
     $carpeta = $_POST['carpeta'];
@@ -19,7 +20,6 @@
             array_push($array,"Usuarios/".str_replace(".","_",$correo));
 
             //Lo "enviamos" como respuesta
-            echo json_encode($array);
             break;
 
         //Acceso mediante carpetas
@@ -37,7 +37,6 @@
             $_SESSION['carpetaActual'] = $carpetaActual ;
             //array_push($array, $_SESSION['ultCarpeta']);
             //array_push($array,"Usuarios/".str_replace(".","_",$correo).$_SESSION['carpetaActual']);
-            echo json_encode($array);
             break;
 
         //atras
@@ -57,7 +56,6 @@
             array_push($array,$_SESSION['ultCarpeta']);
             array_push($array,$dir);
             array_push($array,"Usuarios/".str_replace(".","_",$correo));
-            echo json_encode($array);
             break;
 
         //Acceso mediante navigator
@@ -75,8 +73,18 @@
             $_SESSION['carpetaActual'] = $carpetaActual ;
             //array_push($array, $_SESSION['ultCarpeta']);
             //array_push($array,"Usuarios/".str_replace(".","_",$correo).$_SESSION['carpetaActual']);
-            echo json_encode($array);
             break;
 
     }
+
+    
+    $SIZE_LIMIT = 1000000001; // 5 GB
+    $disk_used = foldersize("../Usuarios/carlesesparza@gmail_com/");
+
+    $disk_remaining = $SIZE_LIMIT - $disk_used;
+
+    array_push($array,format_size($SIZE_LIMIT));
+    array_push($array,format_size($disk_used));
+    array_push($array,format_size($disk_used)*100/(format_size($SIZE_LIMIT)*1000));
+    echo json_encode($array);
 ?>

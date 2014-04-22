@@ -1,6 +1,7 @@
 var types = new Array("ai","aspx","bmp","c","cpp","css","dmg","doc","docx","exe","gif","h","html","iso","java","jpg","mp3","mp4","odp","pdf",
 	"php","png","ppt","psd","rar","sql","tgz","txt","xls","xlsx","xml","zip","js","odt","jpeg");
 
+var rutaEnt,usRuta;
 //Funcion que devuelve la extension de un archivo.Del punto al final de la cadena de un string
 function extension(file)
 {
@@ -16,6 +17,33 @@ function extension(file)
 	return ext.split("").reverse().join("");
 }
 
+function seleccionaFitx()
+{
+	var name = event.target.id.replace("span-","").replace("/","");
+	if(selected.indexOf(name)==-1)
+	{
+    	$(' .ui-selected').removeClass('ui-selected');
+    	selected = new Array();
+    	selected.push(name);
+    	console.log("longitud: "+selected.length);
+    	$('li[id="'+name+'"]').addClass('ui-widget-content noDrag ui-selected');
+	}
+}
+
+function actualitzaProgressBar(porcen,ocupado,total)
+{
+	$("#infoEstado").html(ocupado + " de " + total);
+	$(".progress-bar").css("width",porcen.toFixed(2)+"%");
+	$(".progress-bar").html(porcen.toFixed(2)+"%");
+	
+	if(porcen<=50)
+		$(".progress-bar").removeClass(' progress-bar-danger').removeClass(' progress-bar-warning').addClass(' progress-bar-success');
+	else if(porcen<=80)
+		$(".progress-bar").removeClass(' progress-bar-danger').removeClass(' progress-bar-success').addClass(' progress-bar-warning');
+	else
+		$(".progress-bar").removeClass(' progress-bar-success').removeClass(' progress-bar-warning').addClass(' progress-bar-danger');
+}
+
 function creaArchivos(data)
 {
 	var carp = $.parseJSON(data);
@@ -24,8 +52,13 @@ function creaArchivos(data)
 	var div = $("#llistaFitx"); 
 	div.empty();
 	//var carp = $.parseJSON(data);
-	var ruta = carp[carp.length-1]+carp[carp.length-2];
-	//alert("ruta : "+ruta);
+	ruta = carp[carp.length-4]+carp[carp.length-5];
+	usRuta = carp[carp.length-4];
+	rutaEnt = carp[carp.length-5];
+	//alert(carp);
+	actualitzaProgressBar(carp[carp.length-1],carp[carp.length-2],carp[carp.length-3]);
+
+	//salert("ruta : "+ruta);
 	//alert(ruta);
 	//var tot = carp[0].length;
 	//console.log(tot);
@@ -137,10 +170,10 @@ function creaArchivos(data)
 					res(div,ruta,carp[0][val],"xlsx",carp[1][val]);
 					break;
 				case 30:
-					text(div,ruta,carp[0][val],"unk",carp[1][val]);
+					text(div,ruta,carp[0][val],"xml",carp[1][val]);
 					break;
 				case 31:
-					text(div,ruta,carp[0][val],"xml",carp[1][val]);
+					res(div,ruta,carp[0][val],"zip",carp[1][val]);
 					break;
 				case 32:
 					text(div,ruta,carp[0][val],"unk",carp[1][val]);
@@ -167,7 +200,39 @@ function creaArchivos(data)
 					activeClass:"active",
 					tolerance: "pointer",
 					drop: function( event, ui ) {
-						alert(ruta+event.target.id.replace("span-","").replace("img-",""));
+						console.log("movere:");
+						console.log(JSON.stringify(selected));
+						console.log("al siguiente directorio");
+						console.log(ruta+event.target.id.replace("span-","").replace("img-",""));
+
+						/* Comprobar que no movamos una carpeta dentro de si mismo */
+						var mov = true;
+						$.each(selected, function(index, val) {
+							//alert("/"+val+" - "+event.target.id.replace("span-","").replace("img-",""));
+							if(event.target.id.replace("span-","").replace("img-","").indexOf(val)!=-1)
+								mov = false;
+						});
+
+						if(!mov)
+							mensaje("No puedes mover una carpeta dentro de si misma");
+						else
+						{
+							$.ajax({
+				            type: "POST",
+				            	url: "PHP/moverArchivos.php",
+								data: "ficheros="+JSON.stringify(selected)+"&destino="+ruta+event.target.id.replace("span-","").replace("img-",""),
+								dataType: "html",
+								error: function()
+								{
+									alert("error petición ajax");
+								},
+								success: function(data)
+								{ 
+									//alert(data);
+									archivos("same");
+								}
+				          	});
+						}
 					}
 				})
 				.attr("id",carp[0][val])
@@ -189,56 +254,52 @@ function creaArchivos(data)
 	       					//alert(event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
 	       					archivos(1,event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
 	       				})
-	       				.draggable({ 
-								opacity: 1, 
-								helper: "clone" , 
-								cursor: "move",
-								cursorAt: { top: -12, left: -20 },
+		   				.draggable({ 
+							opacity: 1, 
+							cursor: "move",
+							revert:'invalid',
+							cursorAt: { top: -12, left: -20 },
 						    helper: function( event ) {
+						    	var name = event.target.id.replace("span-","").replace("/","");
+						    	if(selected.indexOf("/"+name)==-1)
+						    	{
+							    	$(' .ui-selected').removeClass('ui-selected');
+							    	selected = new Array();
+							    	selected.push(name);
+							    	console.log("longitud: "+selected.length);
+							    	$('li[id="'+name+'"]').addClass('ui-widget-content noDrag ui-selected');
+						    	}
 						    	if(selected.length > 1)
 						    		return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />Mover "+selected.length +" elementos</div>");
 						    	else
 						        	return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />"+event.target.id.replace("drag-","")+"</div>" );
 						    }
-							})
+						})
 				)
 			)
 		}
 		i++;
 	}		
-	alert(songs+videos+pictures);
+	//alert(songs+videos+pictures);
 
 	$("#llistaFitx").selectable({
 		cancel: "span,.cancel,.glyphicon",
+		start:function()
+		{
+        	$("#menuCont").css("display","none");
+			$("#menuCont").animate({
+				"opacity": 0},100);
+		},
 		stop: function() {
 			selected = new Array();
 	        $( ".ui-selected.noDrag", this ).each(function() {
 	        	selected.push($( this ).attr("id"));
-	         	//alert($( this ).attr("id"));
 	        });
-	        console.log(selected);
 	        $( ".drag", this ).each(function() {
-        	var n = $( this ).attr("id").replace("span-","");
-        	$(this).draggable({ 
-				opacity: 1, 
-				helper: "clone" , 
-				cursor: "move",
-				cursorAt: { top: -12, left: -20 },
-		    	helper: function( event ) {
-		    	if(selected.length > 1)
-		    		return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />Mover "+selected.length +" elementos</div>");
-		    	else
-		        	return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />"+event.target.id.replace("drag-","")+"</div>" );
-		    }
-							})
-        	if(selected.indexOf(n)==-1)
-        	{
-        		console.log("q"+n);
-        		$( this ).draggable('destroy');
-        	}
-         	//alert($( this ).attr("id"));
-        });
-        alert(selected);
+        		var n = $( this ).attr("id").replace("span-","");
+        	});
+        	console.log("selected: "+selected);
+        	//alert(selected);
   		}
 	});
 }
@@ -275,6 +336,9 @@ function res(div,ruta,nom,tipo,tamany)
 			.addClass("ui-widget-content noDrag")
 			.attr("data-toggle","modal")
 			.attr("data-target","#modalRes")
+			.click(function(event) {
+				seleccionaFitx();
+			})
 			.append
 			(
 				$(document.createElement("img"))
@@ -291,17 +355,26 @@ function res(div,ruta,nom,tipo,tamany)
 					.text(nom+"-"+tamany)
 
        				.draggable({ 
-							opacity: 1, 
-							helper: "clone" , 
-							cursor: "move",
-							cursorAt: { top: -12, left: -20 },
+						opacity: 1, 
+						cursor: "move",
+						revert:'invalid',
+						cursorAt: { top: -12, left: -20 },
 					    helper: function( event ) {
+					    	var name = event.target.id.replace("span-","").replace("/","");
+					    	if(selected.indexOf(name)==-1)
+					    	{
+						    	$(' .ui-selected').removeClass('ui-selected');
+						    	selected = new Array();
+						    	selected.push(name);
+						    	console.log("longitud: "+selected.length);
+						    	$('li[id="'+name+'"]').addClass('ui-widget-content noDrag ui-selected');
+					    	}
 					    	if(selected.length > 1)
 					    		return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />Mover "+selected.length +" elementos</div>");
 					    	else
 					        	return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />"+event.target.id.replace("drag-","")+"</div>" );
 					    }
-						})
+					})
 			)
 	)
 }
@@ -315,37 +388,48 @@ function pdf(div,ruta,nom,tipo,tamany)
 			.addClass("ui-widget-content noDrag")
 			.attr("data-toggle","modal")
 			.attr("data-target","#modalPDF")
-		.append
-		(
-			$(document.createElement("img"))
-				.attr("id","img-"+nom)
-				.attr("src","images/iconFiles/pdf.png")
-				.addClass("imgNav")
-				.attr("alt",nom)
-		)
-		.append
-		(
-			$(document.createElement("span"))
-				.addClass("spanNomNav  drag")
-				.attr("id","span-"+nom)
-				.text(nom+"-"+tamany)
-				.click(function(event) {
-					$("#PDFviewer").attr("data",ruta+event.target.id.replace("span-","").replace("img-",""));
-				})
+			.append
+			(
+				$(document.createElement("img"))
+					.attr("id","img-"+nom)
+					.attr("src","images/iconFiles/pdf.png")
+					.addClass("imgNav")
+					.attr("alt",nom)
+			)
+			.append
+			(
+				$(document.createElement("span"))
+					.addClass("spanNomNav  drag")
+					.attr("id","span-"+nom)
+					.text(nom+"-"+tamany)
+					.click(function(event) {
+						$("#nameFitxPDF").text(event.target.id.replace("span-","").replace("img-",""));
+						$("#PDFviewer").attr("data",ruta+event.target.id.replace("span-","").replace("img-",""));
+						seleccionaFitx();
+					})
 
-   				.draggable({ 
+	   				.draggable({ 
 						opacity: 1, 
-						helper: "clone" , 
 						cursor: "move",
+						revert:'invalid',
 						cursorAt: { top: -12, left: -20 },
-				    helper: function( event ) {
-				    	if(selected.length > 1)
-				    		return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />Mover "+selected.length +" elementos</div>");
-				    	else
-				        	return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />"+event.target.id.replace("drag-","")+"</div>" );
-				    }
-				})
-		)		
+					    helper: function( event ) {
+					    	var name = event.target.id.replace("span-","").replace("/","");
+					    	if(selected.indexOf(name)==-1)
+					    	{
+						    	$(' .ui-selected').removeClass('ui-selected');
+						    	selected = new Array();
+						    	selected.push(name);
+						    	console.log("longitud: "+selected.length);
+						    	$('li[id="'+name+'"]').addClass('ui-widget-content noDrag ui-selected');
+					    	}
+					    	if(selected.length > 1)
+					    		return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />Mover "+selected.length +" elementos</div>");
+					    	else
+					        	return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />"+event.target.id.replace("drag-","")+"</div>" );
+					    }
+					})
+			)		
 	)
 }
 
@@ -383,17 +467,27 @@ function video(div,ruta,nom,tipo,tamany)
 
 						document.getElementById('video').addEventListener('ended', function()
 						{
-							alert("hola");
+							alert("fin video");
 							//quitar reproductor...
 						}, false);
+						seleccionaFitx();
 					})
 
-       				.draggable({ 
-							opacity: 1, 
-							helper: "clone" , 
-							cursor: "move",
-							cursorAt: { top: -12, left: -20 },
+	   				.draggable({ 
+						opacity: 1, 
+						cursor: "move",
+						revert:'invalid',
+						cursorAt: { top: -12, left: -20 },
 					    helper: function( event ) {
+					    	var name = event.target.id.replace("span-","").replace("/","");
+					    	if(selected.indexOf(name)==-1)
+					    	{
+						    	$(' .ui-selected').removeClass('ui-selected');
+						    	selected = new Array();
+						    	selected.push(name);
+						    	console.log("longitud: "+selected.length);
+						    	$('li[id="'+name+'"]').addClass('ui-widget-content noDrag ui-selected');
+					    	}
 					    	if(selected.length > 1)
 					    		return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />Mover "+selected.length +" elementos</div>");
 					    	else
@@ -428,9 +522,10 @@ function audio(div,ruta,nom,tipo,tamany)
 					.text(nom+"-"+tamany)
 					.click(function(event) {
 						//alert(songs.indexOf(ruta+nom));
-						indexSong = songs.indexOf(ruta+nom);
+						songsPlaying = songs;
+						indexSong = songsPlaying.indexOf(ruta+nom);
 						$("#repMusica").animate({
-							"height": "50px",
+							"height": "75px",
 							"opacity": 1},
 							500);
 						$("#backMus").css("display","inline-block");
@@ -440,20 +535,25 @@ function audio(div,ruta,nom,tipo,tamany)
 						$("#audio").attr("src",ruta+event.target.id.replace("span-","").replace("img-","")).attr("type","audio/mpeg");
 						$("#music").load();
 						$("#audio")[0].play();
-
-						document.getElementById('audio').addEventListener('ended', function()
-						{
-							alert("hola");
-							//quitar reproductor...
-						}, false);
+						$("#nomSong").text(nom);
+						seleccionaFitx();
 					})
 
-       				.draggable({ 
-							opacity: 1, 
-							helper: "clone" , 
-							cursor: "move",
-							cursorAt: { top: -12, left: -20 },
+	   				.draggable({ 
+						opacity: 1, 
+						cursor: "move",
+						revert:'invalid',
+						cursorAt: { top: -12, left: -20 },
 					    helper: function( event ) {
+					    	var name = event.target.id.replace("span-","");
+					    	if(selected.indexOf(name)==-1)
+					    	{
+						    	$(' .ui-selected').removeClass('ui-selected');
+						    	selected = new Array();
+						    	selected.push(name);
+						    	console.log("longitud: "+selected.length);
+						    	$('li[id="'+name+'"]').addClass('ui-widget-content noDrag ui-selected');
+					    	}
 					    	if(selected.length > 1)
 					    		return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />Mover "+selected.length +" elementos</div>");
 					    	else
@@ -489,6 +589,8 @@ function text(div,ruta,nom,tipo,tamany)
 					.text(nom+"-"+tamany)
 					.click(function(event) {
 						//archivos(event.target.id);
+						$("#textDiv").addClass('hidden');
+						$("#cargandoText").removeClass('hidden');
 						$.ajax({
 					    	type: "POST",
 					       	url: "PHP/leerFichero.php",
@@ -500,17 +602,35 @@ function text(div,ruta,nom,tipo,tamany)
 					       	},
 					       success: function(data)
 					       	{ 
-					       		$("#text").val(data);
+					       		$("#nameFitx").text(event.target.id.replace("span-","").replace("img-",""));
+					       		$("#nameFitx").attr("ruta",ruta);
+								editor.setValue(data);
+								setTimeout(function(){
+									$("#textDiv").removeClass('hidden');
+									$("#cargandoText").addClass('hidden');
+									editor.refresh();
+									editor.setCursor(0,0);
+									editor.setOption("mode","text/javascript");
+								},1000);
 					       	}
 				    	});
+						seleccionaFitx();
 					})
-
-       				.draggable({ 
-							opacity: 1, 
-							helper: "clone" , 
-							cursor: "move",
-							cursorAt: { top: -12, left: -20 },
+					.draggable({ 
+						opacity: 1, 
+						cursor: "move",
+						revert:'invalid',
+						cursorAt: { top: -12, left: -20 },
 					    helper: function( event ) {
+					    	var name = event.target.id.replace("span-","").replace("/","");
+					    	if(selected.indexOf(name)==-1)
+					    	{
+						    	$(' .ui-selected').removeClass('ui-selected');
+						    	selected = new Array();
+						    	selected.push(name);
+						    	console.log("longitud: "+selected.length);
+						    	$('li[id="'+name+'"]').addClass('ui-widget-content noDrag ui-selected');
+					    	}
 					    	if(selected.length > 1)
 					    		return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />Mover "+selected.length +" elementos</div>");
 					    	else
@@ -549,14 +669,24 @@ function imagen(div,ruta,nom,tipo,tamany)
 						indexPic = pictures.indexOf(ruta+nom);
 						//archivos(event.target.id);
 						solicitarTamanoImagen(ruta+nom);
+						seleccionaFitx();
 					})
 
-       				.draggable({ 
-							opacity: 1, 
-							helper: "clone" , 
-							cursor: "move",
-							cursorAt: { top: -12, left: -20 },
+	   				.draggable({ 
+						opacity: 1, 
+						cursor: "move",
+						revert:'invalid',
+						cursorAt: { top: -12, left: -20 },
 					    helper: function( event ) {
+					    	var name = event.target.id.replace("span-","").replace("/","");
+					    	if(selected.indexOf(name)==-1)
+					    	{
+						    	$(' .ui-selected').removeClass('ui-selected');
+						    	selected = new Array();
+						    	selected.push(name);
+						    	console.log("longitud: "+selected.length);
+						    	$('li[id="'+name+'"]').addClass('ui-widget-content noDrag ui-selected');
+					    	}
 					    	if(selected.length > 1)
 					    		return $( "<div class='ui-widget-header'><img src='../images/moveLit.png' />Mover "+selected.length +" elementos</div>");
 					    	else

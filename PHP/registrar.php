@@ -6,7 +6,14 @@
     $correo =  $_POST['emailReg'];
     $pass = $_POST['passReg'];
     
-    $db = new mysqli("localhost","savecloud","savecloud","SaveCloud");
+    session_start();
+    include "config.php";
+    inicializaLocal();
+    if( $_SESSION['local'])
+        $db = new mysqli("localhost","savecloud","savecloud","SaveCloud");
+    else
+       $db = new mysqli("mysql2.000webhost.com","a1174599_cloud","ce3453275","a1174599_cloud");
+   
     $query = "SELECT * from usuarios WHERE correo = '$correo'";
     if ($result = $db->query($query))
     {

@@ -16,38 +16,6 @@ jQuery(document).ready(function($) {
 	})
 });
 
-function getXMLHttp()
-{
-  var xmlHttp
-
-  try
-  {
-    //Firefox, Opera 8.0+, Safari
-    xmlHttp = new XMLHttpRequest();
-  }
-  catch(e)
-  {
-    //Internet Explorer
-    try
-    {
-      xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
-    }
-    catch(e)
-    {
-      try
-      {
-        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-      catch(e)
-      {
-        alert("Your browser does not support AJAX!")
-        return false;
-      }
-    }
-  }
-  return xmlHttp;
-}
-
 function login()
 {
 	$("#succSigRed").addClass('hidden');
@@ -59,7 +27,7 @@ function login()
 	var passLog = $("#passLog").val();
 	$.ajax({
     	type: "POST",
-       	url: "PHP/login.php",
+       	url: "../PHP/login.php",
        	data: "emailLog="+emailLog+"&passLog="+passLog,
        	dataType: "html",
        	error: function()
@@ -68,6 +36,7 @@ function login()
        	},
        success: function(data)
        	{       
+          console.log(data);
        		switch(data)
        		{
        			case "si":
@@ -107,7 +76,7 @@ function registrar()
 	{
 		$.ajax({
 	    	type: "POST",
-	       	url: "PHP/registrar.php",
+	       	url: "../PHP/registrar.php",
 	       	data: "emailReg="+emailReg+"&passReg="+passReg,
 	       	dataType: "html",
 	       	error: function()

@@ -1,6 +1,26 @@
-function pasteMenu(id)
+function pasteMenu(id,rutaCopy)
 {
-	alert(copiados);
+	//alert(id);
+	$.ajax({
+    	type: "POST",
+       	url: "PHP/copiarArchivos.php",
+       	data: "nombreFich="+id.replace("/","")+"&rutaCopy="+rutaCopy,
+       	dataType: "html",
+       	error: function()
+       	{
+        	alert("error petición ajax");
+       	},
+       success: function(data)
+       	{ 
+       		//alert(data);
+       		if(data == "NO")
+       		{
+       			mensaje(" <strong>ERROR!</strong> No puedes copiar una carpeta dentro de si misma.");
+		    }
+			else
+				archivos("same");
+       	}
+    });
 }
 
 function deleteMenu(id)

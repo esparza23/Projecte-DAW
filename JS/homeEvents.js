@@ -47,7 +47,13 @@ jQuery(document).ready(function($) {
 				processData:false,
 				contentType:false,
 				type:'POST',
-
+				xhrFields: {
+					onprogress: function (e) {
+						if (e.lengthComputable) {
+							console.log(e.loaded / e.total * 100 + '%');
+						}
+					}
+				},
 		       	error: function()
 		       	{
 		        	alert("error petición ajax");

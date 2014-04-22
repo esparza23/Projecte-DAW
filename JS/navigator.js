@@ -2,21 +2,22 @@
 function navigator(data)
 {
 	var div = $("#unidad");
+	div.next().empty();
 	div.after(data);
 	$("span.toggle").next().hide();
 	
 	// add a link nudging animation effect to each link
     $("#jQ-menu a, #jQ-menu span.toggle").hover(function() {
         $(this).stop().animate( {
-			fontSize:"17px",
-			paddingLeft:"10px",
-			color:"black"
+			fontSize:"20px",
+			paddingLeft:"5px",
+			color:"#1b3c80"
         }, 300);
     }, function() {
         $(this).stop().animate( {
 			fontSize:"14px",
 			paddingLeft:"0",
-			color:"#808080"
+			color:"black"
         }, 300);
     });
 	
@@ -24,14 +25,14 @@ function navigator(data)
 	// prepend a plus sign to signify that the sub-menus aren't expanded
 
 	$(".toggle").each(function() {
-		console.log($(this).attr("id"));
+		//console.log($(this).attr("id"));
 		$(this).prev().attr("src","../images/foldClose.png").addClass('folder');
 	});
 	// set the cursor of the toggling span elements
 	$(".folder").css("cursor", "pointer");
 	
 	//ir a la carpeta
-	$("span.toggle").click(function() {
+	$("span.toggle").unbind('click').click(function() {
 		if($(this).attr("id") != "unidad")
 		{
 			ruta = "";
@@ -45,19 +46,15 @@ function navigator(data)
 			while(div.attr("id") != "unidad");
 			ruta = ruta.split("/").reverse().join("/");
 			ruta.substring(0,ruta.length-2);
-			//alert("ir a " +ruta.split("/").reverse().join("/"));
-			
-			//alert(ruta);
 			archivos(3,"/"+ruta);
-			//if($(this).attr("id") != "unidad")
-				//alert("Hay que ir a "+ $(this).parent().parent().prev().attr("id"));
 		}
-		else alert("raiz");
+		else 
+			archivos(3,"/");
 	});
 	$("span.toggle").css("cursor", "pointer");
 
 	//abrir pestañita si corresponde
-	$(".folder").click(function() {
+	$(".folder").unbind('click').click(function() {
 		$(this).next().next().toggle(400);
 		
 		// switch the plus to a minus sign or vice-versa
@@ -74,7 +71,51 @@ function navigator(data)
 		activeClass:"active",
 		tolerance: "pointer",
 		drop: function( event, ui ) {
-			alert("hola");
+			
+			var ruta = "";
+			div = $("#"+event.target.id);
+			if(div.attr("id") != "unidad")
+			{
+				console.log(div);
+				do
+				{
+					ruta+="/"+div.attr("id");
+					div = div.parent().parent().prev();
+					//alert(div.attr("id"));
+				}
+				while(div.attr("id") != "unidad");
+			}
+			
+			ruta = usRuta+"/"+ruta.split("/").reverse().join("/");
+			//alert(ruta);
+			var mov = true;
+			//alert(rutaEnt);
+			$.each(selected, function(index, val) {
+				var tot = usRuta+rutaEnt+val;
+				//alert(ruta+" - "+tot);
+				if(ruta.indexOf(tot)!=-1 )
+					mov = false;
+			});
+			if(!mov)
+				mensaje("No puedes mover una carpeta dentro de si misma");
+			else
+			{
+				$.ajax({
+	            	type: "POST",
+	            	url: "PHP/moverArchivos.php",
+					data: "ficheros="+JSON.stringify(selected)+"&destino="+ruta,
+					dataType: "html",
+					error: function()
+					{
+						alert("error petición ajax");
+					},
+					success: function(data)
+					{ 
+						//alert(data);
+						archivos("same");
+					}
+	          	});
+			}
 		}
 	})
 }

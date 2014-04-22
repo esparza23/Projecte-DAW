@@ -15,8 +15,8 @@
 		<script src="JS/home.js" type="text/javascript"></script>
 		<script src="Scrollbar/perfect-scrollbar.js" type="text/javascript"></script>
 		<script src="Scrollbar/jquery.mousewheel.js" type="text/javascript"></script>
+		<script src="JS/utilidades.js" type="text/javascript"></script>
 		<script src="JS/utilidadesMenu.js" type="text/javascript"></script>
-		<script src="JS/home.js" type="text/javascript"></script>
 		<script src="JS/reproductorMusica.js" type="text/javascript"></script>
 		<script src="JS/reproductorVideo.js" type="text/javascript"></script>
 		<script src="JS/reproductorFotos.js" type="text/javascript"></script>
@@ -28,12 +28,22 @@
 		
 		<link rel="stylesheet" type="text/css" href="Bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="Jquery/jquery-ui-1.10.3.css">
-		<link rel="stylesheet" type="text/css" href="css/app.css">
+		<link rel="stylesheet" type="text/css" href="CSS/app.css">
 		<link rel="stylesheet" type="text/css" href="Scrollbar/perfect-scrollbar.css">
-		<link rel="stylesheet" type="text/css" href="css/flaticon.css">
-		<script>
-			
-		</script>
+		<link rel="stylesheet" type="text/css" href="CSS/flaticon.css">
+		
+
+		<script src="codemirror-4.0/lib/codemirror.js" type="text/javascript"></script>
+
+		<script src="codemirror-4.0/mode/xml/xml.js"></script>
+		<script src="codemirror-4.0/mode/javascript/javascript.js"></script>
+		<script src="codemirror-4.0/mode/css/css.js"></script>
+		<script src="codemirror-4.0/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="codemirror-4.0/mode/clike/clike.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="codemirror-4.0/lib/codemirror.css">
+		<link rel="stylesheet" type="text/css" href="codemirror-4.0/theme/elegant.css">
+		
 	</head>
 	<body>
 		<?php
@@ -58,27 +68,55 @@
 			       		navigator(data);
 			       	}
 			    });
+			    /*
+			    $.ajax({
+			    	type: "POST",
+			       	url: "PHP/tamanoDir.php",
+			       	data: "",
+			       	dataType: "html",
+			       	error: function()
+			       	{
+			        	alert("error petición ajax");
+			       	},
+			       success: function(data)
+			       	{ 
+			       		alert(data);
+			       	}
+			    });
+				*/
 			</script>	
+			<div id="back1" class="back"></div>
+			<div id="back2" class="back"></div>
+			<div id="back3" class="back"></div>
 			<div id="cont">
 				<div id="controls">
-					<button id="atras" type="button" class="btn btn-default btn-lg" >
-						<marquee behavior="scroll" direction="left"><span class="glyphicon glyphicon-arrow-left"></span> Atrás</marquee>
+					<div id="infoEstado" class="hidden-xs hidden-sm alert alert-info controls">1GB de 2GB </div id="infoEstado">
+					<div id="estado" class="hidden-xs hidden-sm  progress-striped">
+						<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 83%">
+						50%
+						</div>
+					</div>
+					<button id="atras" type="button" class="btn btn-default alert-info controls">
+						<span class="glyphicon glyphicon-arrow-left"></span>
 					</button>
-					<button id="nCarpeta" type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#modalNuevaCarpeta">
+					<button id="nCarpeta" type="button" class="btn btn-default alert-info controls" data-toggle="modal" data-target="#modalNuevaCarpeta">
 						<img src="/images/newFolder.png" class="iconMenu">
 					</button>
-					<button id="nFichero" type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#modalNuevoFichero">
-						<img src="/images/newFile.png" class="iconMenu"> 
+					<button id="nFichero" type="button" class="btn btn-default alert-info controls" data-toggle="modal" data-target="#modalNuevoFichero">
+						<img src="/images/newfile.png" class="iconMenu"> 
 					</button>
-					<button id="upload" type="button" class="btn btn-default btn-lg">
-						<img src="/images/upload.png" class="iconMenu2"> 
+					<button id="upload" type="button" class="btn btn-default alert-info controls">
+						<img src="/images/upload.png" class="iconMenu"> 
 					</button>
 					<input id="fileUpload" type="file" name="file" multiple="multiple">
-					<button id="logout" type="button" class="btn btn-default btn-lg">
+					<button id="logout" type="button" class="btn btn-default alert-info controls">
 						<img src="/images/logOut.png" class="iconMenu"> 
 					</button>
 				</div>
-				<div id="jQ-menu">
+				<div id="menu-tab" class="visible-xs visible-sm">
+					<span class="glyphicon glyphicon-align-justify"></span>
+				</div>
+				<div id="jQ-menu" >
 					<ul>
 						<li><img /><span id="unidad" class="toggle">Mi Unidad</span></li>
 					</ul>
@@ -93,7 +131,16 @@
 			}
 			else
 			{
-				echo "pepe";
+				echo 
+				'<img id="img403" src="images/403.png" class="center-block">';
+				echo 
+				'
+				<script>
+					setTimeout(function(){
+						document.location = "/";
+					},5000);
+				</script>
+				';
 			}
 		?>
 
@@ -108,7 +155,7 @@
 						<label for="nombreCarp" class="center-block modalTit">Nombre para la nueva carpeta</label>
 						<input type="text" class="form-control center-block" id="nombreCarp" placeholder="Nueva Carpeta">
 						<div class="butIzq" ><button id="acCarp" class="btn btn-success center-block">Aceptar</button></div>
-						<div class="butDer" ><button id="cancCarp" class="btn btn-danger center-block">Cancelar</button></div>
+						<div class="butDer" ><button id="cancCarp" data-dismiss="modal" class="btn btn-danger center-block">Cancelar</button></div>
 					</div>
 				</div>
 			</div>
@@ -122,7 +169,7 @@
 						<label for="nombreFich" class="center-block modalTit">Nombre para el nuevo fichero</label>
 						<input type="text" class="form-control center-block" id="nombreFich" placeholder="Nuevo Fichero">
 						<div class="butIzq" ><button id="acFich" class="btn btn-success center-block">Aceptar</button></div>
-						<div class="butDer" ><button id="cancCarp" class="btn btn-danger center-block">Cancelar</button></div>
+						<div class="butDer" ><button id="cancCarp" data-dismiss="modal" class="btn btn-danger center-block">Cancelar</button></div>
 					</div>
 				</div>
 			</div>
@@ -131,19 +178,35 @@
 		<div id="modalVideo" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"  data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-sm modal-vid">
 				<div id="contVid" class="modal-content">
-					<button id="closeVid" type="button" class="btn btn-default">
-						<img src="/images/close.png" class="imgOp"> 
-					</button>
-					<video id="video"  controls>
-					  <source id="vid" src="" type="">
-					Your browser does not support the video tag.
-					</video>
-					<button id="butBackVid" class="btn btn-default">
-						<span class="glyphicon glyphicon-backward"></span>
-					</button>
-					<button id="butForVid" class="btn btn-default">
-						<span class="glyphicon glyphicon-forward"></span>
-					</button>
+					<div id="contrUpVid">
+						<label id="nameVid"></label>
+						<button id="closeVid" type="button" class="btn btn-link">
+							<img src="/images/close.png" class="imgOp"> 
+						</button>
+					</div>
+					<div id="videoVid">
+						<div>
+							<video id="video" >
+							  <source id="vid" src="" type="">
+							Your browser does not support the video tag.
+							</video>
+						</div>
+						<div id="contrVid">
+							<button id="butBackVid" class="btn btn-link btn-lg vidContr">
+								<span class="glyphicon glyphicon-backward"></span>
+							</button>
+							<button id="butPauseVid" class="btn btn-link btn-lg vidContr">
+								<span class="glyphicon glyphicon-pause"></span>
+							</button>
+							<button id="butForVid" class="btn btn-link btn-lg vidContr">
+								<span class="glyphicon glyphicon-forward"></span>
+							</button>
+							<button id="butResizeVid" class="btn btn-link btn-lg vidContr">
+								<span class="glyphicon glyphicon-resize-full"></span>
+							</button>
+							<div id="sliderVolVid"></div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -151,7 +214,7 @@
 		<div id="modalIMG"class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-sm modal-IMG">
 				<div id="contIMG" class="modal-content">
-					<button id="closeIMG" type="button" class="btn btn-default">
+					<button id="closeIMG" type="button" class="btn btn-link">
 						<img src="/images/close.png" class="imgOp"> 
 					</button>
 					<div class="form-group">
@@ -159,10 +222,10 @@
 						<div>
 							<img id="imagen" src="" alt="" class="img">
 						</div>
-						<button id="butBackPic" class="btn btn-default">
+						<button id="butBackPic" class="btn btn-link">
 							<span class="glyphicon glyphicon-backward"></span>
 						</button>
-						<button id="butForPic" class="btn btn-default">
+						<button id="butForPic" class="btn btn-link">
 							<span class="glyphicon glyphicon-forward"></span>
 						</button>
 					</div>
@@ -173,11 +236,13 @@
 		<div id="modalPDF"class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-sm modal-PDF">
 				<div id="contPDF" class="modal-content">
-					<button id="closePDF" type="button" class="btn btn-default">
-						<img src="/images/close.png" class="imgOp"> 
-					</button>
+					<div id="contrPDF">
+						<label id="nameFitxPDF">PDF</label>
+						<button id="closePDF" type="button" class="btn btn-link">
+							<img src="/images/close.png" class="imgOp"> 
+						</button>
+					</div>
 					<div class="form-group">
-						<label for="exampleInputEmail1">PDF</label>
 						<div>
 							<object id="PDFviewer" data="" type="application/pdf"></object>
 						</div>
@@ -188,17 +253,22 @@
 
 		<div id="modalText"class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-sm modal-Text">
-				<div id="contPDF" class="modal-content">
-					<button id="save" type="button" class="btn btn-default">
-						<img src="/images/save.png" class="imgOp"> 
-					</button>
-					<button id="closeText" type="button" class="btn btn-default">
-						<img src="/images/close.png" class="imgOp"> 
-					</button>
+				<div id="contText" class="modal-content">
+					<div id="contrText">
+						<label id="nameFitx"></label>
+						<button id="save" type="button" class="btn btn-link">
+							<img src="/images/Save.png" class="imgOp"> 
+						</button>
+						<button id="closeText" type="button" class="btn btn-link">
+							<img src="/images/close.png" class="imgOp"> 
+						</button>
+					</div>
 					<div class="form-group">
-						<label for="exampleInputEmail1">Text</label>
-						<div>
-							<textarea id="text" class="form-control" rows="3"></textarea>
+						<div id="cargandoText">
+							<img src="../images/cargando.gif" width="192px" height="192px" alt="">
+						</div>
+						<div id="textDiv" class="hidden">
+							<textarea id="text" ></textarea>
 						</div>
 					</div>
 				</div>
@@ -218,44 +288,69 @@
 
 
 		<div id="repMusica">
-			<button id="butBack" class="btn btn-default">
+			<marquee id="nomSong" class="contrMus"  behavior="scroll" direction="left"><span >Nom de la canço</span></marquee>
+			<button id="butBackMus" class="btn btn-link contrMus">
 				<span id="backMus" class="glyphicon glyphicon-backward"></span>
 			</button>
-			<button id="butFor" class="btn btn-default">
+			<button id="butPauseMus" class="btn btn-link contrMus">
+				<span class="glyphicon glyphicon-pause"></span>
+			</button>
+			<button id="butForMus" class="btn btn-link contrMus">
 				<span id="forMus" class="glyphicon glyphicon-forward"></span>
 			</button>
-			<audio id="audio" controls >
+			<div id="sliderVolMus"></div>
+			<audio id="audio">
 			  	<source id="music" src="" type="">
 				Your browser does not support the audio element.
 			</audio>
-			<button id="closeMus" type="button" class="btn btn-default">
+			<button id="closeMus" type="button" class="btn btn-link">
 				<img src="/images/close.png" class="imgOp"> 
 			</button>
 		</div>
 
 		<div id="menuCont">
 			<ul>
+				<li id="butCambiarNom">
+					<button type="button" class="butMenu btn btn-default btn-sm">
+						<img src="/images/Rename.png" class="iconCont" width="30px" height="30px"> <span class="spanMen">Rename</span>
+					</button>
+				</li>    
 				<li id="butCopiar">
 					<button type="button" class="butMenu btn btn-default btn-sm">
-						<img src="/images/Cut.png" class="iconMenu" width="24px" height="24px"> <span class="spanMen">Copiar</span>
+						<img src="/images/Cut.png" class="iconCont" width="30px" height="30px"> <span class="spanMen">Copiar</span>
 					</button>
 				</li>
 				<li id="butPegar">
 					<button type="button" class="butMenu btn btn-default btn-sm">
-						<img src="/images/Paste.png" class="iconMenu" width="24px" height="24px"> <span class="spanMen">Pegar</span>
+						<img src="/images/Paste.png" class="iconCont" width="30px" height="30px"> <span class="spanMen">Pegar</span>
 					</button>
 				</li>
 				<li id="butEliminar">
 					<button type="button" class="butMenu btn btn-default btn-sm">
-						<img src="/images/Delete.png" class="iconMenu" width="24px" height="24px"> <span class="spanMen">Eliminar</span>
+						<img src="/images/Delete.png" class="iconCont" width="30px" height="30px"> <span class="spanMen">Eliminar</span>
 					</button>
 				</li>
 				<li id="butDescargar">
 					<button type="button" class="butMenu btn btn-default btn-sm">
-						<img src="/images/Download.png" class="iconMenu" width="24px" height="24px"> <span class="spanMen">Descargar</span>
+						<img src="/images/Download.png" class="iconCont" width="30px" height="30px"> <span class="spanMen">Descargar</span>
 					</button>
 				</li>
+
+					<a id="desc" href="Usuarios/carlesesparza@gmail_com/usuaris.css" target="_blank" download>haha</a>
 			</ul>
 		</div>
+
+		<div id="mensajes" class="alert alert-danger alert-dismissable hidden">
+		  <strong>Warning!</strong> Better check yourself, you're not looking too good.
+		</div>
+		<script>
+			editor = CodeMirror.fromTextArea(document.getElementById("text"), {
+				lineNumbers: true, 
+				indentUnit: 4,
+				matchBrackets: true,
+				theme:"elegant",
+				autofocus: true
+			});
+		</script>
 	</body>
 </html>

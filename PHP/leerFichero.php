@@ -4,7 +4,6 @@
 	$carpetaActual = $_SESSION['carpetaActual'];
 	$correo =  $_SESSION['nom'];
 	$ruta = "../Usuarios/".str_replace(".","_",$correo)."/".$carpetaActual."/".$fich;
-	echo $ruta;
 	if (file_exists($ruta))
 	{
 		if($valor = file_get_contents($ruta))

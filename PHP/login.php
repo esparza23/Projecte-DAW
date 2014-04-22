@@ -7,7 +7,13 @@
     $pass = $_POST['passLog'];
     
     session_start();
-    $db = new mysqli("localhost","savecloud","savecloud","SaveCloud");
+    include "config.php";
+    inicializaLocal();
+    if( $_SESSION['local'])
+        $db = new mysqli("localhost","savecloud","savecloud","SaveCloud");
+    else
+        $db = new mysqli("mysql2.000webhost.com","a1174599_cloud","ce3453275","a1174599_cloud");
+
     $query = "SELECT * from usuarios WHERE correo = '$correo' AND password = '$pass'";
     if ($result = $db->query($query))
     {

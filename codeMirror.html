@@ -1,0 +1,38 @@
+<html>
+	<head>
+
+		<meta charset="UTF-8">
+		<script src="codemirror-4.0/lib/codemirror.js" type="text/javascript"></script>
+
+		<script src="codemirror-4.0/mode/xml/xml.js"></script>
+		<script src="codemirror-4.0/mode/javascript/javascript.js"></script>
+		<script src="codemirror-4.0/mode/css/css.js"></script>
+		<script src="codemirror-4.0/mode/htmlmixed/htmlmixed.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="codemirror-4.0/lib/codemirror.css">
+		<link rel="stylesheet" type="text/css" href="codemirror-4.0/theme/elegant.css">
+
+	</head>
+	<body>
+		<textarea id="pepe" style="height:400px; width:400px; border:1px solid red">
+		</textarea>
+		<button id="button">hola</button>
+
+		<script>
+			 //document.getElementById("pepe").value = "function holakase(){alert('hola')}";
+			 var editor = CodeMirror.fromTextArea(document.getElementById("pepe"), {
+      			lineNumbers: true, 
+			    mode: "text/javascript",
+			    indentUnit: 4,
+      			matchBrackets: true,
+			    theme:"elegant"
+
+			  });
+			 	var caca = "function suma(a,b) {\n\tvar suma = a+b;\n\treturn suma;\n}";
+				editor.setValue(caca);
+			  document.getElementById("button").onclick=function(){
+			  	alert(editor.getValue());
+			  };
+		</script>
+	</body>
+</html>
