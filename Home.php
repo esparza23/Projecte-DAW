@@ -22,7 +22,7 @@
 		<script src="JS/reproductorFotos.js" type="text/javascript"></script>
 		<script src="JS/editorTextos.js" type="text/javascript"></script>
 		<script src="JS/homeEvents.js" type="text/javascript"></script>
-		<script src="JS/fileTypes.js" type="text/javascript"></script>
+		<script src="JS/gestionArchivos.js" type="text/javascript"></script>
 		<script src="JS/navigator.js" type="text/javascript"></script>
 
 		
@@ -40,6 +40,7 @@
 		<script src="codemirror-4.0/mode/css/css.js"></script>
 		<script src="codemirror-4.0/mode/htmlmixed/htmlmixed.js"></script>
 		<script src="codemirror-4.0/mode/clike/clike.js"></script>
+		<script src="codemirror-4.0/mode/php/php.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="codemirror-4.0/lib/codemirror.css">
 		<link rel="stylesheet" type="text/css" href="codemirror-4.0/theme/elegant.css">
@@ -50,41 +51,30 @@
 			include "PHP/funciones.php";
 			if(isset($_SESSION['nom']))
 			{
-				
-		?>		
-			<script>
-				archivos(0,"/");
-				$.ajax({
-			    	type: "POST",
-			       	url: "PHP/listarDirectorios.php",
-			       	data: "",
-			       	dataType: "html",
-			       	error: function()
-			       	{
-			        	alert("error petición ajax");
-			       	},
-			       success: function(data)
-			       	{ 
-			       		navigator(data);
-			       	}
-			    });
-			    /*
-			    $.ajax({
-			    	type: "POST",
-			       	url: "PHP/tamanoDir.php",
-			       	data: "",
-			       	dataType: "html",
-			       	error: function()
-			       	{
-			        	alert("error petición ajax");
-			       	},
-			       success: function(data)
-			       	{ 
-			       		alert(data);
-			       	}
-			    });
-				*/
-			</script>	
+				//echo $_SESSION['carpetaActual'];
+				if(stripos($_SESSION['carpetaActual'], '@') === false)
+				{
+		?>	
+			<script type="text/javascript">
+				//alert("NO TIENE ARROBA");
+				gestionArchivos.archivos(0,"/");
+				barraLateral.cogeInfo();
+			</script>
+		<?php
+				}	
+				else 
+				{
+		
+			echo 
+			'<script type="text/javascript">
+				var carpetaActual = "'.$_SESSION['carpetaActual'].'";
+				alert(carpetaActual);
+				gestionArchivos.archivos(6,carpetaActual);
+				barraLateral.cogeInfo();
+			</script>';
+				}
+		?>
+			
 			<div id="back1" class="back"></div>
 			<div id="back2" class="back"></div>
 			<div id="back3" class="back"></div>
@@ -92,7 +82,7 @@
 				<div id="controls">
 					<div id="infoEstado" class="hidden-xs hidden-sm alert alert-info controls">1GB de 2GB </div id="infoEstado">
 					<div id="estado" class="hidden-xs hidden-sm  progress-striped">
-						<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 83%">
+						<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
 						50%
 						</div>
 					</div>
@@ -154,6 +144,7 @@
 					<div class="form-group">
 						<label for="nombreCarp" class="center-block modalTit">Nombre para la nueva carpeta</label>
 						<input type="text" class="form-control center-block" id="nombreCarp" placeholder="Nueva Carpeta">
+						<div id="mensajesCarpeta" class="alert alert-danger hidden"></div>
 						<div class="butIzq" ><button id="acCarp" class="btn btn-success center-block">Aceptar</button></div>
 						<div class="butDer" ><button id="cancCarp" data-dismiss="modal" class="btn btn-danger center-block">Cancelar</button></div>
 					</div>
@@ -168,6 +159,7 @@
 					<div class="form-group">
 						<label for="nombreFich" class="center-block modalTit">Nombre para el nuevo fichero</label>
 						<input type="text" class="form-control center-block" id="nombreFich" placeholder="Nuevo Fichero">
+						<div id="mensajesFichero" class="alert alert-danger hidden"></div>
 						<div class="butIzq" ><button id="acFich" class="btn btn-success center-block">Aceptar</button></div>
 						<div class="butDer" ><button id="cancCarp" data-dismiss="modal" class="btn btn-danger center-block">Cancelar</button></div>
 					</div>
@@ -179,7 +171,7 @@
 			<div class="modal-dialog modal-sm modal-vid">
 				<div id="contVid" class="modal-content">
 					<div id="contrUpVid">
-						<label id="nameVid"></label>
+						<div id="nameVid" class="contrMus" ><label >Video</label></div>
 						<button id="closeVid" type="button" class="btn btn-link">
 							<img src="/images/close.png" class="imgOp"> 
 						</button>
@@ -214,20 +206,24 @@
 		<div id="modalIMG"class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 			<div class="modal-dialog modal-sm modal-IMG">
 				<div id="contIMG" class="modal-content">
-					<button id="closeIMG" type="button" class="btn btn-link">
-						<img src="/images/close.png" class="imgOp"> 
-					</button>
-					<div class="form-group">
-						<label for="exampleInputEmail1">Imagen</label>
-						<div>
+					<div id="contrUpImg">
+						<marquee id="nameImg" class="contrMus"  behavior="scroll" direction="left"><label >Imagen</label></marquee>
+						<button id="closeIMG" type="button" class="btn btn-link">
+							<img src="/images/close.png" class="imgOp"> 
+						</button>
+					</div>
+					<div id="contImg">
+						<div >
 							<img id="imagen" src="" alt="" class="img">
 						</div>
-						<button id="butBackPic" class="btn btn-link">
-							<span class="glyphicon glyphicon-backward"></span>
-						</button>
-						<button id="butForPic" class="btn btn-link">
-							<span class="glyphicon glyphicon-forward"></span>
-						</button>
+						<div id="contrImg">
+							<button id="butBackPic" class="btn btn-link contrImg">
+								<span class="glyphicon glyphicon-backward"></span>
+							</button> 
+							<button id="butForPic" class="btn btn-link contrImg">
+								<span class="glyphicon glyphicon-forward"></span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -336,7 +332,7 @@
 					</button>
 				</li>
 
-					<a id="desc" href="Usuarios/carlesesparza@gmail_com/usuaris.css" target="_blank" download>haha</a>
+					<a id="desc" href="Usuarios/tmp/carlesesparza@gmail_com/download.zip" download></a>
 			</ul>
 		</div>
 
@@ -344,7 +340,7 @@
 		  <strong>Warning!</strong> Better check yourself, you're not looking too good.
 		</div>
 		<script>
-			editor = CodeMirror.fromTextArea(document.getElementById("text"), {
+			editorTextos.editor = CodeMirror.fromTextArea(document.getElementById("text"), {
 				lineNumbers: true, 
 				indentUnit: 4,
 				matchBrackets: true,

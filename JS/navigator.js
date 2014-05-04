@@ -1,41 +1,70 @@
-
-function navigator(data)
+barraLateral = 
 {
-	var div = $("#unidad");
-	div.next().empty();
-	div.after(data);
-	$("span.toggle").next().hide();
-	
-	// add a link nudging animation effect to each link
-    $("#jQ-menu a, #jQ-menu span.toggle").hover(function() {
-        $(this).stop().animate( {
-			fontSize:"20px",
-			paddingLeft:"5px",
-			color:"#1b3c80"
-        }, 300);
-    }, function() {
-        $(this).stop().animate( {
-			fontSize:"14px",
-			paddingLeft:"0",
-			color:"black"
-        }, 300);
-    });
-	
-	
-	// prepend a plus sign to signify that the sub-menus aren't expanded
+	cogeInfo : function()
+	{
+		$.ajax({
+	    	type: "POST",
+	       	url: "PHP/listarDirectorios.php",
+	       	data: "",
+	       	dataType: "html",
+	       	error: function()
+	       	{
+	        	alert("error petición ajax");
+	       	},
+	       success: function(data)
+	       	{ 
+	       		barraLateral.crear(data);
+	       		//$("#jQ-menu").children().children().children().click();
+	       	}
+	    });
+	},
+	crear : function(data)
+	{
+		//añadimos el contenido a la barra lateral
+		var div = $("#unidad");
+		div.next().empty();
+		div.after(data);
+		$("span.toggle").next().hide();
 
-	$(".toggle").each(function() {
-		//console.log($(this).attr("id"));
-		$(this).prev().attr("src","../images/foldClose.png").addClass('folder');
-	});
-	// set the cursor of the toggling span elements
-	$(".folder").css("cursor", "pointer");
-	
-	//ir a la carpeta
-	$("span.toggle").unbind('click').click(function() {
+		barraLateral.afegirEfecteHover();
+		//Añadimos la imagen de carpeta delante de cada nombre
+		$(".toggle").each(function() {
+			$(this).prev().attr("src","../images/foldClose.png").addClass('folder');
+		});
+
+		
+		// si clickamos en el nombre es para acceder a la carpeta
+		$("span.toggle").unbind('click').click(barraLateral.clickEntrar);
+		$("span.toggle").css("cursor", "pointer");
+
+		//si clickamos en la imagen es para abrir la carpeta(si tiene subcarpetas)
+		$(".folder").unbind('click').click(barraLateral.clickAbrir);
+
+		$("#jQ-menu span").droppable(utilidades.droppableBarraLateral);
+	},
+	afegirEfecteHover : function()		//Añadimos la animacion a los textos de las carpetas y que el cursor sea pointer
+	{		
+		
+	    $("#jQ-menu a, #jQ-menu span.toggle").hover(function() {
+	        $(this).stop().animate( {
+				fontSize:"18px",
+				paddingLeft:"5px",
+				color:"#1D18F5"
+	        }, 300);
+	    }, function() {
+	        $(this).stop().animate( {
+				fontSize:"14px",
+				paddingLeft:"0",
+				color:"black"
+	        }, 300);
+	    });		
+		$(".folder").css("cursor", "pointer");
+	},
+	clickEntrar : function()
+	{
 		if($(this).attr("id") != "unidad")
 		{
-			ruta = "";
+			var ruta = "";
 			div = $(this);
 			do
 			{
@@ -46,15 +75,13 @@ function navigator(data)
 			while(div.attr("id") != "unidad");
 			ruta = ruta.split("/").reverse().join("/");
 			ruta.substring(0,ruta.length-2);
-			archivos(3,"/"+ruta);
+			gestionArchivos.archivos(3,"/"+ruta);
 		}
 		else 
-			archivos(3,"/");
-	});
-	$("span.toggle").css("cursor", "pointer");
-
-	//abrir pestañita si corresponde
-	$(".folder").unbind('click').click(function() {
+			gestionArchivos.archivos(3,"/");
+	},
+	clickAbrir : function() 
+	{
 		$(this).next().next().toggle(400);
 		
 		// switch the plus to a minus sign or vice-versa
@@ -64,58 +91,7 @@ function navigator(data)
 			$(this).attr("src","../images/foldOpen.png");
 		else if ( $(this).attr("src") == "../images/foldOpen.png" )
 			$(this).attr("src","../images/foldClose.png");
-	});
 
-	$("#jQ-menu span").droppable({
-		hoverClass:"hover",
-		activeClass:"active",
-		tolerance: "pointer",
-		drop: function( event, ui ) {
-			
-			var ruta = "";
-			div = $("#"+event.target.id);
-			if(div.attr("id") != "unidad")
-			{
-				console.log(div);
-				do
-				{
-					ruta+="/"+div.attr("id");
-					div = div.parent().parent().prev();
-					//alert(div.attr("id"));
-				}
-				while(div.attr("id") != "unidad");
-			}
-			
-			ruta = usRuta+"/"+ruta.split("/").reverse().join("/");
-			//alert(ruta);
-			var mov = true;
-			//alert(rutaEnt);
-			$.each(selected, function(index, val) {
-				var tot = usRuta+rutaEnt+val;
-				//alert(ruta+" - "+tot);
-				if(ruta.indexOf(tot)!=-1 )
-					mov = false;
-			});
-			if(!mov)
-				mensaje("No puedes mover una carpeta dentro de si misma");
-			else
-			{
-				$.ajax({
-	            	type: "POST",
-	            	url: "PHP/moverArchivos.php",
-					data: "ficheros="+JSON.stringify(selected)+"&destino="+ruta,
-					dataType: "html",
-					error: function()
-					{
-						alert("error petición ajax");
-					},
-					success: function(data)
-					{ 
-						//alert(data);
-						archivos("same");
-					}
-	          	});
-			}
-		}
-	})
+		
+	}
 }

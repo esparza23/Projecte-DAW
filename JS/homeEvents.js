@@ -48,11 +48,15 @@ jQuery(document).ready(function($) {
 				contentType:false,
 				type:'POST',
 				xhrFields: {
-					onprogress: function (e) {
-						if (e.lengthComputable) {
-							console.log(e.loaded / e.total * 100 + '%');
-						}
-					}
+					onprogress: function (progress) {
+			        // calculate upload progress
+			        var percentage = Math.floor((progress.total / progress.totalSize) * 100);
+			        // log upload progress to console
+			        console.log('progress', percentage);
+			        if (percentage === 100) {
+			          console.log('DONE!');
+			        }
+			      }
 				},
 		       	error: function()
 		       	{
@@ -60,8 +64,8 @@ jQuery(document).ready(function($) {
 		       	},
 		       success: function(data)
 		       	{ 
-		       		//alert(data);
-		       		archivos("same");
+		       		console.log(data);
+		       		gestionArchivos.archivos("same");
 		       	}
 		    });
 		}
@@ -69,7 +73,12 @@ jQuery(document).ready(function($) {
 
 	//Controlamos el click en el boton atras del menu.
 	$("#atras").unbind('click').click(function(event) {
-		archivos(2,"");
+		//alert(gestionArchivos.historial);
+		//alert(gestionArchivos.usRuta);
+		if(gestionArchivos.historial[gestionArchivos.historial.length-2].indexOf('@')==-1)
+			gestionArchivos.archivos(2,"");
+		else 
+			gestionArchivos.archivos(5,gestionArchivos.historial[gestionArchivos.historial.length-2]);
 	});
 
 	//Controlamos el click en el boton logout del menu

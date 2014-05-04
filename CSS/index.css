@@ -1,0 +1,144 @@
+body {
+	height: 100%;
+	width: 100%;
+}
+#port
+{
+	height: 100%;
+	min-height: 800px;
+}
+#logo
+{
+	margin-top: 25px;
+}
+#infoLogin
+{
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+#slogan
+{
+	margin-top: 70px;
+	text-align: center;
+}
+
+#sloganText
+{
+	font-size: 40px;
+}
+
+#sloganText span
+{
+	font-size: 45px;
+	font-weight: bold;
+	color:#0c6ebe;
+}
+
+#masInfo
+{
+	text-align: center;
+}
+
+#masInfoText
+{
+	font-size: 25px;
+	cursor: pointer
+}
+
+#masInfoText > span
+{
+	margin-right: 15px;
+}
+
+#masInfoText :last-child
+{
+	margin-left: 15px;
+}
+
+#info
+{
+	height: 100%;
+}
+
+#volverArriba
+{
+	margin-top: 30px;
+	text-align: center;
+}
+
+#volverArribaText
+{
+	font-size: 25px;
+	cursor: pointer
+}
+
+#volverArribaText > span
+{
+	margin-right: 15px;
+}
+
+#volverArribaText :last-child
+{
+	margin-left: 15px;
+}
+
+#info p
+{
+	margin-top: 30px;
+	width: 400px;
+}
+
+
+/*		formularios		*/
+.logSig
+{
+	width:70%;
+}
+
+.logSigTitle
+{
+	text-align: center;
+}
+.cond
+{
+	font-size: 12px;
+}
+
+#form1
+{
+}
+#form2
+{
+	box-sizing:border-box;
+	padding-left: 25px;
+	border-left:2px solid black;
+}
+.misErr
+{
+	text-align: center;
+}
+
+
+@media(max-width: 991px){
+	#parForm2
+	{
+		border-top: 2px solid black;
+		margin-top: 20px;
+		padding-top: 15px;
+		box-sizing:border-box;
+	}
+	#form2
+	{
+		box-sizing:border-box;
+		padding-left: 0;
+		border-left:none;
+	}	
+	#info p
+	{
+		box-sizing:border-box;
+		margin-top: 30px;
+		padding:0 10px;
+		width: 380px;
+	}
+}

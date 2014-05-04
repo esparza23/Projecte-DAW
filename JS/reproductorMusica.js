@@ -1,131 +1,152 @@
 /* Libreria que controla el reproductor de musica */
 
-var songs;
-var indexSong;
-var abiertoMusica;
-var reproduciendoMusica;
+//declaramos el espacio de nombres reproductor de musica
+var reproductorMusica = 
+{
+	songs : null,
+	indexSong : null,
+	abierto : null,
+	reproduciendo : null,
+	songsPlaying : null,
 
-jQuery(document).ready(function($) {
-
-	abiertoMusica = true;
-	reproduciendoMusica = true;
-
-	$( "#sliderVolMus" ).slider({
-      value:1,
-      min: 0,
-      max: 1,
-      step: 0.01,
-      range: "min", 
-      slide: function( event, ui ) {
-       	$("#audio")[0].volume = ui.value;
-      }
-    });
-
-
-	/* Parar y accionar el marquee amb mouse
-	$("#nomSong").mouseover(function(event) {
-		document.getElementById('nomSong').start();
-	});
-	$("#nomSong").mouseout(function(event) {
-		document.getElementById('nomSong').stop();
-	});
-	*/
-    document.getElementById("audio").addEventListener('play', function(e) {
-		$("#butPauseMus").children().removeClass('glyphicon-play');
-		$("#butPauseMus").children().addClass('glyphicon-pause');
-	}, true);
-	document.getElementById("audio").addEventListener('pause', function(e) {
-	   	$("#butPauseMus").children().removeClass('glyphicon-pause');
-		$("#butPauseMus").children().addClass('glyphicon-play');	
-	}, true);
-
-	//funcion que repdroduce la siguiente cancion(si hay)
-	function nextSong()
+	activaSlidervolumen : function()	//funcion que activa el slider par controlar el volumen
 	{
-		indexSong++;
-		if(indexSong == songsPlaying.length)
-			indexSong = 0;
-		$("#audio").attr("src",songsPlaying[indexSong]);
+		$( "#sliderVolMus" ).slider({
+			value:1,
+			min: 0,
+			max: 1,
+			step: 0.01,
+			range: "min", 
+			slide: function( event, ui ) {
+				$("#audio")[0].volume = ui.value;
+			}
+		});
+	},
+	abrir : function(rutaAudio,nom)		//funcion que abre el reproductor de musica con la cancion que recibe
+	{
+		//alert(reproductorMusica.songs.indexOf(rutaAudio+nom));
+		reproductorMusica.songsPlaying = reproductorMusica.songs;
+		reproductorMusica.indexSong = reproductorMusica.songsPlaying.indexOf(rutaAudio+nom);
+		$("#repMusica").animate({
+			"height": "75px",
+			"opacity": 1},
+			500);
+		$("#backMus").css("display","inline-block");
+		$("#forMus").css("display","inline-block");
+		$("#closeMus").css("display","inline-block");
+		$("#audio").css("display","inline-block");
+		$("#audio").attr("src",rutaAudio+event.target.id.replace("span-","").replace("img-","")).attr("type","audio/mpeg");
 		$("#music").load();
 		$("#audio")[0].play();
-		var ult = songsPlaying[indexSong].lastIndexOf("/");
-		$("#nomSong").text(songsPlaying[indexSong].substring(ult+1,songsPlaying[indexSong].length));
-	}
-
-	//funcion que repdroduce la anterior cancion(si hay)
-	function prevSong()
+		$("#nomSong").text(nom);
+		reproductorMusica.abierto = true;
+		reproductorMusica.reproduciendo = true;
+	},
+	cerrar : function()		//funcion que cierra el reproductor de musica
 	{
-		indexSong--;
-		if(indexSong==-1)
-			indexSong = songsPlaying.length-1;
-		$("#audio").attr("src",songsPlaying[indexSong]);
-		$("#music").load();
-		$("#audio")[0].play();
-		var ult = songsPlaying[indexSong].lastIndexOf("/");
-		$("#nomSong").text(songsPlaying[indexSong].substring(ult+1,songsPlaying[indexSong].length));
-	}
-
-	//Funciones que controlan los botones de anterios/siguiente/pausa
-	$("#butBackMus").unbind('click').click(function(event) {
-		prevSong();
-	});
-	$("#butForMus").unbind('click').click(function(event) {
-		nextSong();
-	});
-
-	$("#butPauseMus").unbind('click').click(function(event) {
-		var but = $(this).children();
+		$("#repMusica").animate({
+			"height": "0px",
+			"opacity": 0},
+			500);
+		$("#audio").css("display","none")
+		$(this).css("display","none")
+		$("#audio")[0].pause();
+		reproductorMusica.abierto = false;
+	},
+	pausePlay : function()		//funcion que para y reproduce el audio, cambiando el icono de pause/play
+	{
+		var but = $("#butPauseMus").children();
 		if(but.hasClass('glyphicon-pause'))
 		{
-			but.removeClass('glyphicon-pause');
-			but.addClass('glyphicon-play');
+			reproductorMusica.ponerIconoPlay();
 			$("#audio")[0].pause();
 		}
 		else
 		{
-			but.removeClass('glyphicon-play');
-			but.addClass('glyphicon-pause');
+			reproductorMusica.ponerIconoPausa();
 			$("#audio")[0].play();
 		}
-	});
-
-	document.getElementById('audio').addEventListener('ended', function()
+		reproductorMusica.reproduciendo = !reproductorMusica.reproduciendo;
+	},
+	ponerIconoPausa : function()	//Funcion que cambia el icono de play a pausa
 	{
-		nextSong();
-	}, false);
-
-	//funcion que controla el boton cerrar el reproductor de musica
-	$("#closeMus").click(function(event) {
-			$("#repMusica").animate({
-				"height": "0px",
-				"opacity": 0},
-				500);
-			$("#audio").css("display","none")
-			$(this).css("display","none")
-			$("#audio")[0].pause();
-	});
-
-	//funcion que controla el reproductor mediante el teclado
-	$(document).keydown(function(event) {
+		$("#butPauseMus").children().removeClass('glyphicon-play');
+		$("#butPauseMus").children().addClass('glyphicon-pause');
+	},
+	ponerIconoPlay : function()		//Funcion que cambia el icono de pausa a play
+	{
+	   	$("#butPauseMus").children().removeClass('glyphicon-pause');
+		$("#butPauseMus").children().addClass('glyphicon-play');	
+	},
+	nextSong : function()	//funcion que repdroduce la siguiente cancion(si hay)
+	{
+		reproductorMusica.indexSong++;
+		if(reproductorMusica.indexSong == reproductorMusica.songsPlaying.length)
+			reproductorMusica.indexSong = 0;
+		$("#audio").attr("src",reproductorMusica.songsPlaying[reproductorMusica.indexSong]);
+		$("#music").load();
+		$("#audio")[0].play();
+		var ult = reproductorMusica.songsPlaying[reproductorMusica.indexSong].lastIndexOf("/");
+		$("#nomSong").text(reproductorMusica.songsPlaying[reproductorMusica.indexSong].substring(ult+1,reproductorMusica.songsPlaying[reproductorMusica.indexSong].length));
+	},
+	prevSong : function()	//funcion que repdroduce la anterior cancion(si hay)
+	{
+		reproductorMusica.indexSong--;
+		if(reproductorMusica.indexSong==-1)
+			reproductorMusica.indexSong = reproductorMusica.songsPlaying.length-1;
+		$("#audio").attr("src",reproductorMusica.songsPlaying[reproductorMusica.indexSong]);
+		$("#music").load();
+		$("#audio")[0].play();
+		var ult = reproductorMusica.songsPlaying[reproductorMusica.indexSong].lastIndexOf("/");
+		$("#nomSong").text(reproductorMusica.songsPlaying[reproductorMusica.indexSong].substring(ult+1,reproductorMusica.songsPlaying[reproductorMusica.indexSong].length));
+	},
+	controlaTeclado : function()	//funcion que controla el reproductor en funcion de las entradas por teclado
+	{
 		//console.log(event.keyCode);
-		if(abiertoMusica && ! abiertoPictures && !abiertoVideo)
+		if(reproductorMusica.abierto  && !reproductorVideo.abierto && !reproductorFotos.abierto)
 		{
 			switch(event.keyCode)
 			{
 				case 37:
-					prevSong();
+					reproductorMusica.prevSong();
 					break;
 				case 39:
-					nextSong();
+					reproductorMusica.nextSong();
 					break;
 				case 32:
-					if(reproduciendoMusica)
+					if(reproductorMusica.reproduciendo)
 						$("#audio")[0].pause();
 					else
 						$("#audio")[0].play();
-					reproduciendoMusica = !reproduciendoMusica;
+						reproductorMusica.reproduciendo = !reproductorMusica.reproduciendo;
 					break;
 			}
 		}
-	});
+	}
+
+};
+
+//Acciones que harmeos cuando se cargue el documento
+jQuery(document).ready(function($) {
+
+	//activaremos el slider del volumen
+	reproductorMusica.activaSlidervolumen();
+	
+	//Indicamos los eventos de play/stop para cambiar el icono
+    document.getElementById("audio").addEventListener('play', reproductorMusica.ponerIconoPausa, true);
+	document.getElementById("audio").addEventListener('pause', reproductorMusica.ponerIconoPlay, true);
+
+	//evento que controla el boton cerrar del reproductor de musica
+	$("#closeMus").click(reproductorMusica.cerrar);	
+
+	//eventos que controlan los botones de anterios/siguiente/pausa
+	$("#butBackMus").unbind('click').click(reproductorMusica.prevSong);
+	$("#butForMus").unbind('click').click(reproductorMusica.nextSong);
+	$("#butPauseMus").unbind('click').click(reproductorMusica.pausePlay);
+
+	//evento que controla cuando se acaba de reproducir la cancion, para pasar a la siguiente
+	document.getElementById('audio').addEventListener('ended',reproductorMusica.nextSong, false);
+
+	//funcion que controla el reproductor mediante el teclado
+	$(document).keydown(reproductorMusica.controlaTeclado);
 });

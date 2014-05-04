@@ -87,6 +87,36 @@
 		//print_r($ficheros);
 	}
 
+	function mostraDirCompartit($dir)
+	{
+		$tot = Array();
+		$tamanos = Array();
+		$ficheros = Array();
+		$dir = "../Usuarios/".$dir;
+		//echo $dir;
+		if ($handle = opendir($dir)) {
+		    while (false !== ($entry = readdir($handle))) {
+		        if ($entry != "." && $entry != ".." && $entry[0] != '.') 
+		        {
+					if(is_dir($dir.'/'.$entry)) 
+					{
+						array_push($ficheros, "/$entry");
+						array_push($tamanos, FileSizeConvert(filesize($dir.'/'.$entry)));
+					}
+					else
+					{
+						array_push($ficheros, "$entry");
+						array_push($tamanos, FileSizeConvert(filesize($dir.'/'.$entry)));
+					}
+		        }
+		    }
+		    closedir($handle);
+		}
+		array_push($tot,$ficheros);
+		array_push($tot,$tamanos);
+		return $tot;
+	}
+
 	function smartCopy($source, $dest, $options=array('folderPermission'=>0755,'filePermission'=>0755)) 
     { 
         $result=false; 
@@ -146,4 +176,27 @@
         } 
         return $result; 
     } 
+
+	function comprimirDirectorio($dir, $zip,$correo) 
+	{  
+		//Primero comprabamos que sea un directorio
+		if (is_dir($dir)){   
+			//echo $dir.' jaju\n';  
+			//Por cada elemento dentro del directorio  
+			foreach (scandir($dir) as $item) {   
+				//Evitamos la carpeta actual y la anterior  
+				if ($item == '.' || $item == '..') continue;  
+				//Si encuentra una que no sea las anteriores,  
+				//vuelve a llamar a la función, con un nuevo directorio  
+				comprimirDirectorio($dir . "/" . $item, $zip,$correo);  
+			}  
+		}
+		else
+		{  
+			//En el caso de que sea un archivo, lo añade al zip  
+			if(substr($dir,-7)!="img.png" && substr($dir,-4)!="json")
+				$zip->addFile($dir,"download".$_SESSION['numDown'].str_replace("../Usuarios/".$correo, "", $dir));  
+		}  
+	}  
+
 ?>

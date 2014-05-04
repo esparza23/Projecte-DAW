@@ -1,105 +1,107 @@
 /* Libreria que controla el reproductor de fotos */
 
-var pictures;
-var indexPic;
-var abiertoPictures;
-
-function solicitarTamanoImagen(nombreImagen)
+var reproductorFotos = 
 {
-	$("#imagen").attr("width","192").attr("height","192").attr("src","../images/cargando.gif");
-	$.ajax({
-    	type: "POST",
-       	url: "PHP/tamanoImagen.php",
-       	data: "fichero="+nombreImagen,
-       	dataType: "html",
-       	error: function()
-       	{
-        	alert("error petición ajax");
-       	},
-       success: function(data)
-       	{ 
-       		//Treure el timeout x comprobar en entorns reals la carrega
-       		setTimeout(function(){
-	       		//alert(data);
-	       		var dimensions = data.split("/");
-	       		var w = parseInt(dimensions[0]);
-	       		var h = parseInt(dimensions[1]);
-	       		//alert(h+" - "+w);
-	       		do
-	       		{
-	       			h/=1.5;
-	       			w/=1.5;
-	       		}while(h>600 || w>600);
-	       		//alert(ruta);
-				$("#imagen").attr("src",nombreImagen);
-				$("#imagen").on('load', function () {
-				    $(this).attr("width",w)
-							.attr("height",h);
-					$(this).unbind('load');
-				});
-       		},1000);
-       	}
-	});
-}
+	pictures : null,
+	indexPic : null,
+	abierto : null,
+	rutaFoto : null,
 
-jQuery(document).ready(function($) {
-
-	abiertoPictures =false;
-
-	$("#closeIMG").click(function(event) {
+	abrir  : function(rutaFoto,nom)		//funcion que abre el reproductor de fotos
+	{
+		reproductorFotos.indexPic = reproductorFotos.pictures.indexOf(rutaFoto+nom);
+		reproductorFotos.solicitarTamanoImagen(rutaFoto+nom);
+		reproductorFotos.rutaFoto = rutaFoto;
+	},
+	solicitarTamanoImagen : function(nombreImagen)		//funcion que solicita el tamaño de una imagen
+	{
+		$("#nameImg").children().text(nombreImagen.replace(reproductorFotos.rutaFoto,""));
+		$("#imagen").attr("width","192").attr("height","192").attr("src","../images/cargando.gif");
+		$.ajax({
+	    	type: "POST",
+	       	url: "PHP/tamanoImagen.php",
+	       	data: "fichero="+nombreImagen+"&ajax=ajax",
+	       	dataType: "html",
+	       	error: function()
+	       	{
+	        	alert("error petición ajax");
+	       	},
+	       success: function(data)
+	       	{ 
+	       		console.log(data);
+	       		//Treure el timeout x comprobar en entorns reals la carrega
+	       		setTimeout(function(){
+		       		//alert(data);
+		       		var dimensions = data.split("/");
+		       		var w = parseInt(dimensions[0]);
+		       		var h = parseInt(dimensions[1]);
+		       		//alert(h+" - "+w);
+		       		do
+		       		{
+		       			h/=1.5;
+		       			w/=1.5;
+		       		}while(h>600 || w>600);
+		       		//alert(reproductorFotos.rutaFoto);
+		       		$("#nameImg").children().text(nombreImagen.replace(reproductorFotos.rutaFoto,""));
+					$("#imagen").attr("src",nombreImagen);
+					$("#imagen").on('load', function () {
+					    $(this).attr("width",w).attr("height",h);
+						$(this).unbind('load');
+					});
+					reproductorFotos.abierto = true;
+	       		},1000);
+	       	}
+		});
+	},
+	cerrar : function()		//funcion que cierra el reproductor de fotos
+	{
 		$('#modalIMG').modal('hide');
-		abiertoPictures = false;
-	});
-
-
-	//cuando se abre y cierra el modal, controlamos el booleano que nos indica si esta abierto para el tema de reproducir.
-	$('#modalIMG').on('show.bs.modal', function (e) {
-		abiertoPictures = true;
-	});
-	$('#modalIMG').on('hidden.bs.modal', function (e) {
-		abiertoPictures = false;
-	});
-
-	//funcion que repdroduce la siguiente cancion(si hay)
-	function nextPic()
+		reproductorFotos.abierto = false;
+	},
+	nextPic : function()	//funcion que abre la siguiente fotos
 	{
-		indexPic++;
-		if(indexPic == pictures.length)
-			indexPic = 0;
-		solicitarTamanoImagen(pictures[indexPic]);
-	}
-
-	//funcion que repdroduce la anterior cancion(si hay)
-	function prevPic()
+		reproductorFotos.indexPic++;
+		if(reproductorFotos.indexPic == reproductorFotos.pictures.length)
+			reproductorFotos.indexPic = 0;
+		reproductorFotos.solicitarTamanoImagen(reproductorFotos.pictures[reproductorFotos.indexPic].replace("../",""));
+	},
+	prevPic : function()	//funcion que abre la foto anterior
 	{
-		indexPic--;
-		if(indexPic==-1)
-			indexPic = pictures.length-1;
-		solicitarTamanoImagen(pictures[indexPic]);
-	}
-
-	//Funciones que controlan los botones de anterios/siguiente
-	$("#butBackPic").unbind('click').click(function(event) {
-		prevPic();
-	});
-	$("#butForPic").unbind('click').click(function(event) {
-		nextPic();
-	});
-
-	$(document).keydown(function(event) {
+		reproductorFotos.indexPic--;
+		if(reproductorFotos.indexPic==-1)
+			reproductorFotos.indexPic = reproductorFotos.pictures.length-1;
+		reproductorFotos.solicitarTamanoImagen(reproductorFotos.pictures[reproductorFotos.indexPic].replace("../",""));
+	},
+	controlaTeclado  : function()	//funcion que controla el reproductor de fotos con el teclado
+	{
 		//console.log(event.keyCode);
-		if(abiertoPictures)
+		if(reproductorFotos.abierto)
 		{
 			switch(event.keyCode)
 			{
 				case 37:
-					prevPic();
+					reproductorFotos.prevPic();
 					break;
 				case 39:
-					nextPic();
+					reproductorFotos.nextPic();
 					break;
 			}
 		}
-	});
+	}
+}
+
+
+//Acciones que haremos cuando se cargue el documento
+jQuery(document).ready(function($) {
+
+	//evento que controla el boton cerrar del reproductor de video
+	$("#closeIMG").click(reproductorFotos.cerrar);
+
+	//Funciones que controlan los botones de anterios/siguiente
+	$("#butBackPic").unbind('click').click(reproductorFotos.prevPic);
+	$("#butForPic").unbind('click').click(reproductorFotos.nextPic);
+
+	//funcion que controla el reproductor mediante el teclado
+	$(document).keydown(reproductorFotos.controlaTeclado);
 
 });
