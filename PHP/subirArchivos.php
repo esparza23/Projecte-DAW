@@ -27,8 +27,8 @@
     if ($result = $db->query($query))
     {
         $row = $result->fetch_array(MYSQLI_NUM);
-        //echo "espai lliure: ".($row[2]-$row[3])."tamany fitxer: ".$size;
-        if(($row[2]-$row[3])>=$size)
+        //echo "espai lliure: ".($row[3]-$row[4])."tamany fitxer: ".$size;
+        if(($row[3]-$row[4])>=$size)
         {
             if(move_uploaded_file($tmp_name, $carpeta.$name))
                 echo "SI";
@@ -37,7 +37,7 @@
         else 
         {
 
-            echo $correo."---".$row[2]."---".$row[3];
+            echo $correo."---".$row[3]."---".$row[4];
             echo "NO per espai";
         }
     }

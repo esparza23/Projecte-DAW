@@ -92,7 +92,6 @@
 		$tot = Array();
 		$tamanos = Array();
 		$ficheros = Array();
-		$dir = "../Usuarios/".$dir;
 		//echo $dir;
 		if ($handle = opendir($dir)) {
 		    while (false !== ($entry = readdir($handle))) {

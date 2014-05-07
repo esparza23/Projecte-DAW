@@ -1,9 +1,6 @@
 <?php
 	session_start();
 ?>  
-<?php
-	session_start();
-?>  
 <!DOCTYPE HTML SYSTEM>
 <html>
 	<head>
@@ -68,7 +65,7 @@
 			echo 
 			'<script type="text/javascript">
 				var carpetaActual = "'.$_SESSION['carpetaActual'].'";
-				alert(carpetaActual);
+				//alert(carpetaActual);
 				gestionArchivos.archivos(6,carpetaActual);
 				barraLateral.cogeInfo();
 			</script>';
@@ -80,14 +77,17 @@
 			<div id="back3" class="back"></div>
 			<div id="cont">
 				<div id="controls">
-					<div id="infoEstado" class="hidden-xs hidden-sm alert alert-info controls">1GB de 2GB </div id="infoEstado">
-					<div id="estado" class="hidden-xs hidden-sm  progress-striped">
+					<div id="infoEstado" class="  alert alert-info controls">1GB de 2GB </div id="infoEstado">
+					<div id="estado" class="   progress-striped">
 						<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
 						50%
 						</div>
 					</div>
 					<button id="atras" type="button" class="btn btn-default alert-info controls">
 						<span class="glyphicon glyphicon-arrow-left"></span>
+					</button>
+					<button id="cCarpeta" type="button" class="btn btn-default alert-info controls" data-toggle="modal" data-target="#modalCompCarpeta">
+						<img src="/images/shareFolder.png" class="iconMenu">
 					</button>
 					<button id="nCarpeta" type="button" class="btn btn-default alert-info controls" data-toggle="modal" data-target="#modalNuevaCarpeta">
 						<img src="/images/newFolder.png" class="iconMenu">
@@ -99,6 +99,18 @@
 						<img src="/images/upload.png" class="iconMenu"> 
 					</button>
 					<input id="fileUpload" type="file" name="file" multiple="multiple">
+					<?php 
+						if($_SESSION['admin'])
+						{
+							echo 
+							'	<a href="Admin.php">
+								<button id="admin" type="button" class="btn btn-default alert-info controls">
+									<img src="images/admin.png" class="iconMenu"> 
+								</button>
+								</a>
+							';
+						}
+					?>
 					<button id="logout" type="button" class="btn btn-default alert-info controls">
 						<img src="/images/logOut.png" class="iconMenu"> 
 					</button>
@@ -137,6 +149,21 @@
 		</br>
 		</br>
 
+		<!-- Modal compartir carpeta -->
+		<div id="modalCompCarpeta" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm modal-comp">
+				<div id="contComp" class="modal-content">
+					<div class="form-group">
+						<label for="nombreUs" class="center-block modalTit">Nombre del usuario</label>
+						<input type="text" class="form-control center-block" id="nombreUs" placeholder="Usuario">
+						<div id="mensajesCompartir" class="alert alert-danger hidden"></div>
+						<div class="butIzq" ><button id="acComp" class="btn btn-success center-block">Aceptar</button></div>
+						<div class="butDer" ><button id="cancComp" data-dismiss="modal" class="btn btn-danger center-block">Cancelar</button></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
 		<!-- Modal nueva carpeta -->
 		<div id="modalNuevaCarpeta" class="modal fade bs-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-sm modal-carp">
@@ -332,7 +359,7 @@
 					</button>
 				</li>
 
-					<a id="desc" href="Usuarios/tmp/carlesesparza@gmail_com/download.zip" download></a>
+				<a id="desc" href="Usuarios/tmp/carlesesparza@gmail_com/download.zip" download></a>
 			</ul>
 		</div>
 

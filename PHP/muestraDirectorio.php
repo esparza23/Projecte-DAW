@@ -81,7 +81,7 @@
 
             //Acceso mediante carpeta a carpeta publica
             case 4:
-                $carpetaActual = $carpeta;
+                $carpetaActual = "../Usuarios/".$carpeta;
                 //mostramaos los archivos con el tamaño del directorio
                 $array = mostraDirCompartit($carpetaActual);
 
@@ -98,7 +98,7 @@
 
             //atras con carpeta publica
             case 5:
-                $carpetaActual = $carpeta;
+                $carpetaActual = "../Usuarios/".$carpeta;
                 //mostramaos los archivos con el tamaño del directorio
                 $array = mostraDirCompartit($carpetaActual);
                 if(count($_SESSION['ultCarpeta'])>1)
@@ -116,7 +116,7 @@
 
             //actualizar con carpeta publica
             case 6: 
-                $carpetaActual = $carpeta;
+                $carpetaActual = "../Usuarios/".$carpeta;
                 //mostramaos los archivos con el tamaño del directorio
                 $array = mostraDirCompartit($carpetaActual);
                 //array_push($_SESSION['ultCarpeta'],$carpetaActual);
@@ -147,7 +147,7 @@
         if ($result = $db->query($query))
         {
             $row = $result->fetch_array(MYSQLI_NUM);
-            $SIZE_LIMIT = $row[2];
+            $SIZE_LIMIT = $row[3];
         }
 
         $disk_remaining = $SIZE_LIMIT - $disk_used;

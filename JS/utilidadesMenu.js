@@ -9,6 +9,7 @@ var utilidadesMenu =
 	{
 		if(event.which == 3)
 		{
+			//alert(gestionArchivos.carpPublic);
 			var name = event.target.id.replace("span-","");
 			//alert(name);
 	    	if(utilidadesMenu.selected.indexOf(name)==-1)
@@ -27,16 +28,34 @@ var utilidadesMenu =
 			$("#menuCont").animate({
 				"opacity": 1},100);
 
-			if(utilidadesMenu.selected.length > 1)
-				$("#butCambiarNom").children().addClass("disabled");
-			else
+			if(gestionArchivos.carpPublic == false)
+			{
 				$("#butCambiarNom").children().removeClass("disabled");
-
-			if(utilidadesMenu.copiados.length == 0)
-				$("#butPegar").children().addClass("disabled");
-			else
+				$("#butCopiar").children().removeClass("disabled");
 				$("#butPegar").children().removeClass("disabled");
-			
+				$("#butEliminar").children().removeClass("disabled");
+				$("#butDescargar").children().removeClass("disabled");
+
+				
+
+				if(utilidadesMenu.selected.length > 1)
+					$("#butCambiarNom").children().addClass("disabled");
+				else
+					$("#butCambiarNom").children().removeClass("disabled");
+
+				if(utilidadesMenu.copiados.length == 0)
+					$("#butPegar").children().addClass("disabled");
+				else
+					$("#butPegar").children().removeClass("disabled");
+			}
+			else
+			{
+				$("#butCambiarNom").children().addClass("disabled");
+				$("#butCopiar").children().addClass("disabled");
+				$("#butPegar").children().addClass("disabled");
+				$("#butEliminar").children().addClass("disabled");
+				$("#butDescargar").children().addClass("disabled");
+			}
 			return false;
 		}
 	},
@@ -49,7 +68,7 @@ var utilidadesMenu =
 	{
 		utilidadesMenu.rutaCopy = gestionArchivos.ruta;
 		utilidadesMenu.copiados = utilidadesMenu.selected;
-		//alert(copiados);
+		//alert(utilidadesMenu.copiados);
 	},
 	clickPegar : function(event) 
 	{
@@ -129,11 +148,14 @@ var utilidadesMenu =
 	},
 	pasteMenu : function (id,rutaCopy)
 	{
-		//alert(id);
+		//alert(id+" - "+rutaCopy);
+		var carp = 0;
+		if(id[0]=='/')
+			carp = 1;
 		$.ajax({
 	    	type: "POST",
 	       	url: "PHP/copiarArchivos.php",
-	       	data: "nombreFich="+id.replace("/","")+"&rutaCopy="+rutaCopy+"&ajax=ajax",
+	       	data: "nombreFich="+id.replace("/","")+"&carp="+carp+"&rutaCopy="+rutaCopy+"&ajax=ajax",
 	       	dataType: "html",
 	       	error: function()
 	       	{
@@ -141,13 +163,13 @@ var utilidadesMenu =
 	       	},
 	       success: function(data)
 	       	{ 
-	       		//alert(data);
+	       		alert(data);
 	       		if(data == "NO")
 	       		{
 	       			utilidades.mensaje("#mensajes","<strong>ERROR!</strong> No puedes copiar una carpeta dentro de si misma.");
 			    }
 				else
-					gestionArchivos.archivos("same");
+					gestionArchivos.archivos(0,"same");
 	       	}
 	    });
 	},
@@ -156,22 +178,26 @@ var utilidadesMenu =
 		if(id.indexOf("/")!=-1)
 		{
 			console.log("Es Carpeta");
-			$.ajax({
-		    	type: "POST",
-		       	url: "PHP/borraCarpeta.php",
-		       	data: "nombreCarp="+id.replace("/","")+"&ajax=ajax",
-		       	dataType: "html",
-		       	error: function()
-		       	{
-		        	alert("error petición ajax");
-		       	},
-		       success: function(data)
-		       	{ 
-		       		console.log(data);
-					//alert("Crear Carpeta");
-					gestionArchivos.archivos("same");
-		       	}
-		    });
+			if(id=="/Fotos" || id=="/Public" || id=="/Musica" || id.indexOf('@')!=-1)
+				utilidades.mensaje("#mensajes","<strong>ERROR!</strong> No puedes borrar las carpetas por defecto ni carpetas publicas de otros usuarios.");
+			else
+			{
+				$.ajax({
+			    	type: "POST",
+			       	url: "PHP/borraCarpeta.php",
+			       	data: "nombreCarp="+id.replace("/","")+"&ajax=ajax",
+			       	dataType: "html",
+			       	error: function()
+			       	{
+			        	alert("error petición ajax");
+			       	},
+			       success: function(data)
+			       	{ 
+			       		console.log(data);
+						gestionArchivos.archivos(0,"same");
+			       	}
+			    });
+			}
 		}
 		else
 		{
@@ -189,7 +215,7 @@ var utilidadesMenu =
 		       	{ 
 		       		console.log(data);
 					//alert("Crear Carpeta");
-					gestionArchivos.archivos("same");
+					gestionArchivos.archivos(0,"same");
 		       	}
 		    });
 		}

@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<script src="JS/md5.js" type="text/javascript"></script>
 		<script src="Jquery/jquery-2.0.3.min.js" type="text/javascript"></script>
 		<script src="Jquery/jquery-ui-1.10.3.js" type="text/javascript"></script>
 		<script src="Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
@@ -36,28 +37,22 @@
 			</div>
 		</div>
 		<div id="info">
-			<img class="center-block" src="images/logo.png">
-			<p class="center-block">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-				Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			<img class="center-block" src="images/imagen1.png">
+			<p class="center-block text">
+				Al colocar tus archivos multimedia en <span>SaveCloud</span>, podrás reproducirlos desde cualquier ordenador, tablet 
+				o smartphone con conexión a internet.
 			</p>
 
-			<img class="center-block" src="images/logo.png">
-			<p class="center-block">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-				Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			<img class="center-block" src="images/imagen2.png">
+			<p class="center-block text">
+				Visualiza tus documentos en la nube sin necesidad de descargarlos al dispositivo y modificalos con el editor
+				de textos incoporado en <span>SaveCloud</span>
 			</p>
 
-			<img class="center-block" src="images/logo.png">
-			<p class="center-block">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-				Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-				Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			<img class="center-block" src="images/imagen3.png">
+			<p class="center-block text">
+				Compartir archivos es tan fácil como subir archivos a la carpeta pública y añadir a tus amigos de <span>SaveCloud</span>
+				para que puedan verlos desde cualquier sitio.
 			</p>
 			<div id="volverArriba">
 				<p id="volverArribaText" class="center-block">

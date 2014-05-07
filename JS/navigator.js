@@ -79,6 +79,14 @@ barraLateral =
 		}
 		else 
 			gestionArchivos.archivos(3,"/");
+
+		if($(window).width()<992)
+		{
+			$("#jQ-menu").animate({
+				"width": "0%",
+				"opacity":0
+			}, 500);
+		};
 	},
 	clickAbrir : function() 
 	{

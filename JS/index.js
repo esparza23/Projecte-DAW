@@ -48,6 +48,7 @@ function login()
     
 	var emailLog= $("#emailLog").val();
 	var passLog = $("#passLog").val();
+    passLog = hex_md5(passLog);
 	$.ajax({
     	type: "POST",
        	url: "../PHP/login.php",
@@ -59,7 +60,7 @@ function login()
        	},
        success: function(data)
        	{       
-          console.log(data);
+          	//console.log(data);
        		switch(data)
        		{
        			case "si":
@@ -105,6 +106,12 @@ function registrar()
 		utilidades.mensaje("#errorSigRed","Debes introducir el correo");
 		return false;	
 	}
+	else if(emailReg.trim().indexOf('@')==-1 || emailReg.trim().indexOf('.')==-1)
+	{
+		$("#emailReg").parent().addClass('has-error');
+		utilidades.mensaje("#errorSigRed","El correo debe contener una @ y un punto");
+		return false;	
+	}
 	else if(passReg.trim() == "" )
 	{
 		$("#passReg").parent().addClass('has-error');
@@ -119,15 +126,18 @@ function registrar()
 	}
 	else if(!$('#condCheck').prop('checked'))
 	{
-		utilidades.mensaje("#errorSigRed","Debes accepetar las condiciones de uso y servicio");
+		utilidades.mensaje("#errorSigRed","Debes acceptar las condiciones de uso y servicio");
 		return false;
 	}
 	else
 	{
+		//console.log(passReg);
+		passReg = hex_md5(passReg);
+		//console.log(passReg);
 		$.ajax({
 	    	type: "POST",
 	       	url: "../PHP/registrar.php",
-	       	data: "emailReg="+emailReg+"&passReg="+passReg+"&ajax=ajax",
+	       	data: "emailReg="+emailReg+"&passReg="+passReg+"&admin=0&ajax=ajax",
 	       	dataType: "html",
 	       	error: function()
 	       	{

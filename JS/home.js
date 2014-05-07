@@ -1,4 +1,4 @@
-var applicaction = 
+var application = 
 {
 	caracteresProhibidos : new Array(".","#","(",")","/","@"),
 	extensionesFichero : new Array("txt","js","c","cpp","css","h","html","java","php","sql","xml"),
@@ -55,7 +55,7 @@ var applicaction =
 		{
 			var ext = nombreFich.slice(nombreFich.indexOf(".")+1,nombreFich.length);
 			var nombre = nombreFich.slice(0,nombreFich.indexOf("."));
-			if(applicaction.extensionesFichero.indexOf(ext)==-1)
+			if(application.extensionesFichero.indexOf(ext)==-1)
 				utilidades.mensaje("#mensajesFichero","No puedes crear un archivo con esta extension.");
 			else
 			{
@@ -77,6 +77,44 @@ var applicaction =
 			       	}
 			    });
 			}
+		}
+	},
+	compartirCarpeta : function()
+	{
+		var nombreUs = $("#nombreUs").val().trim();
+		if(nombreUs=="")
+			utilidades.mensaje("#mensajesCompartir","Debes introducir un nombre de usuario.");
+		else
+		{
+			//alert(nombreUs);
+			$.ajax({
+		    	type: "POST",
+		       	url: "PHP/compCarpeta.php",
+		       	data: "nombre="+nombreUs+"&ajax=ajax",
+		       	dataType: "html",
+		       	error: function()
+		       	{
+		        	alert("error petición ajax");
+		       	},
+		       success: function(data)
+		       	{ 
+		       		switch(data)
+		       		{
+		       			case "1":
+		       				utilidades.mensaje("#mensajesCompartir","No puedes compartir una carpeta contigo.");
+		       				break;
+		       			case "2":
+		       				utilidades.mensaje("#mensajesCompartir","El usuario introducido no tiene cuenta de SaveCloud.");
+		       				break;
+		       			case "3":
+		       				utilidades.mensaje("#mensajesCompartir","Ya compartes la carpeta con este usuario.");
+		       				break;
+		       			default:
+		       				alert(data);
+		       				break;
+		       		}
+		       	}
+		    });
 		}
 	}
 }
@@ -109,13 +147,15 @@ jQuery(document).ready(function($) {
 	});
 	*/
 
-	$("#closePDF").click(applicaction.clickCierraPDF);
+	$("#closePDF").click(application.clickCierraPDF);
 
-	$("#closeRes").click(applicaction.clickCierraRes);
+	$("#closeRes").click(application.clickCierraRes);
 
-	$("#acCarp").unbind('click').click(applicaction.crearCarpeta);
+	$("#acCarp").unbind('click').click(application.crearCarpeta);
 
-	$("#acFich").unbind('click').click(applicaction.crearFichero);
+	$("#acFich").unbind('click').click(application.crearFichero);
+
+	$("#acComp").unbind('click').click(application.compartirCarpeta);
 
 	/* menu izq slider */
 	$("#menu-tab").click(function(event) {

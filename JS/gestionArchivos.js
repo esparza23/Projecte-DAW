@@ -6,6 +6,7 @@ var gestionArchivos =
 	usRuta : null,
 	ruta : null,
 	historial : null,
+	carpPublic : null,
 
 	extension : function(file)		//Funcion que devuelve la extension de un archivo.Del punto al final de la cadena de un string
 	{
@@ -92,9 +93,10 @@ var gestionArchivos =
 						.addClass("spanNomNav  drag")
 						.attr("id","span-"+nom)
 						.text(nom+"-"+tamany)
-						.draggable(draggable)
 				)
 		)
+		if(gestionArchivos.carpPublic == false)
+			$('span[id="span-'+nom+'"]').draggable(utilidades.draggable);
 	},
 	pdf : function(div,ruta,nom,tipo,tamany)		//funcion que muestra los archivos pdf
 	{
@@ -125,9 +127,11 @@ var gestionArchivos =
 							gestionArchivos.seleccionaFitx();
 						})
 
-		   				.draggable(utilidades.draggable)
+		   				//.draggable(utilidades.draggable)
 				)		
 		)
+		if(gestionArchivos.carpPublic == false)
+			$('span[id="span-'+nom+'"]').draggable(utilidades.draggable);
 	},
 	audio : function(div,ruta,nom,tipo,tamany)		//funcion que muestra los archivos de musica
 	{
@@ -155,10 +159,10 @@ var gestionArchivos =
 							reproductorMusica.abrir(ruta,nom);
 							gestionArchivos.seleccionaFitx();
 						})
-
-		   				.draggable(utilidades.draggable)
 				)
 		)
+		if(gestionArchivos.carpPublic == false)
+			$('span[id="span-'+nom+'"]').draggable(utilidades.draggable);
 	},
 	video : function(div,ruta,nom,tipo,tamany)		//funcion que muestra los archivos de video
 	{
@@ -188,10 +192,10 @@ var gestionArchivos =
 							reproductorVideo.abrir(ruta,nom);
 							gestionArchivos.seleccionaFitx();
 						})
-
-		   				.draggable(utilidades.draggable)
 				)
 		)
+		if(gestionArchivos.carpPublic == false)
+			$('span[id="span-'+nom+'"]').draggable(utilidades.draggable);
 	},
 	text : function(div,ruta,nom,tipo,tamany)		//funcion que muestra los archivos de texto
 	{
@@ -220,9 +224,10 @@ var gestionArchivos =
 							editorTextos.cargaTexto(event,ruta);
 							gestionArchivos.seleccionaFitx();
 						})
-						.draggable(utilidades.draggable)
 				)
 		)
+		if(gestionArchivos.carpPublic == false)
+			$('span[id="span-'+nom+'"]').draggable(utilidades.draggable);
 	},
 	imagen : function(div,ruta,nom,tipo,tamany)		//funcion que muestra los archivos que son imagenes
 	{
@@ -252,10 +257,10 @@ var gestionArchivos =
 							reproductorFotos.abrir(ruta.replace("../",""),nom)
 							gestionArchivos.seleccionaFitx();
 						})
-
-		   				.draggable(utilidades.draggable)
 				)
 		)
+		if(gestionArchivos.carpPublic == false)
+			$('span[id="span-'+nom+'"]').draggable(utilidades.draggable);
 	},
 	carpeta : function(div,nom)		//funcion que muestra los archivos que son carpeta
 	{
@@ -270,7 +275,7 @@ var gestionArchivos =
 			(
 				$(document.createElement("img"))
 					.attr("id","img-"+nom)
-					.attr("src","images/iconFiles/folder.png")
+					
 					.addClass("imgNav")
 			)
 			.append
@@ -283,13 +288,22 @@ var gestionArchivos =
        					//alert(event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
        					gestionArchivos.archivos(1,event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
        				})
-	   				.draggable(utilidades.draggable)
 			)
 		)
+		if(gestionArchivos.carpPublic == false)
+			$('span[id="span-'+nom+'"]').draggable(utilidades.draggable);
+		if(nom.replace("/","")=="Public")
+			$('img[id="img-'+nom+'"]').attr("src","images/iconFiles/publicFolder.png");
+		else if(nom.replace("/","")=="Fotos")
+			$('img[id="img-'+nom+'"]').attr("src","images/iconFiles/fotosFolder.png");
+		else if(nom.replace("/","")=="Musica")
+			$('img[id="img-'+nom+'"]').attr("src","images/iconFiles/musicaFolder.png");
+		else
+			$('img[id="img-'+nom+'"]').attr("src","images/iconFiles/folder.png")
 	},
 	carpetaCompartida : function(div,nom)		//funcion que muestra los archivos que son carpeta
 	{
-		//alert("soy carpeta: "+carp[0][val]);
+		//alert("soy carpeta: "+nom);
 		div.append
 		(
 			$(document.createElement("li"))
@@ -300,7 +314,7 @@ var gestionArchivos =
 			(
 				$(document.createElement("img"))
 					.attr("id","img-"+nom)
-					.attr("src","images/iconFiles/folder.png")
+					.attr("src","images/iconFiles/shareFolder.png")
 					.addClass("imgNav")
 			)
 			.append
@@ -313,7 +327,6 @@ var gestionArchivos =
        					//alert(event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
        					gestionArchivos.archivos(4,event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
        				})
-	   				.draggable(utilidades.draggable)
 			)
 		)
 	},
@@ -324,11 +337,21 @@ var gestionArchivos =
 		//var div = $("#fitx"); 
 		var div = $("#llistaFitx"); 
 		div.empty();
-		//var carp = $.parseJSON(data);
-		if(op!=4)
+		//var carp =
+		 $.parseJSON(data);
+		if(op!=4 && op!=5 && op!=6)
+		{
 			gestionArchivos.ruta = carp[carp.length-5]+carp[carp.length-6];
+			gestionArchivos.carpPublic = false;
+		}
 		else
-			gestionArchivos.ruta = "../Usuarios/"+carp[carp.length-6];
+		{
+
+			gestionArchivos.carpPublic = true;
+			gestionArchivos.ruta = carp[carp.length-6];
+		}
+
+		//alert(gestionArchivos.ruta);
 		gestionArchivos.usRuta = carp[carp.length-5];
 		gestionArchivos.rutaEnt = carp[carp.length-6];
 		gestionArchivos.historial = carp[carp.length-7];
@@ -475,14 +498,19 @@ var gestionArchivos =
 		}
 		if(gestionArchivos.rutaEnt=="/")
 		{	
-			for(j=0;j<carp[carp.length-1].length;j++)
+			//alert(carp);
+			/*
+			if(true)
 			{
-				;//gestionArchivos.carpetaCompartida(div,carp[carp.length-1][j][2]);	
-			}
-			//alert(carp[carp.length-1][0]);
+				for(j=0;j<carp[carp.length-1].length;j++)
+				{
+					gestionArchivos.carpetaCompartida(div,carp[carp.length-1][j][2]);	
+				}
+				//alert(carp[carp.length-1][0]);
+			}*/
 		}
 		//alert(reproductorMusica.songs+reproductorVideo.videos+reproductorFotos.pictures);
-
-		$("#llistaFitx").selectable(utilidades.selectable);
+		if(gestionArchivos.carpPublic == false)
+			$("#llistaFitx").selectable(utilidades.selectable);
 	}
 };

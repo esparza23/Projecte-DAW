@@ -490,6 +490,12 @@ body {
 	width: 120px;
 }
 
+#menuCont ul li .disabled
+{
+	opacity: 1;
+	background-color: #6e6e6e;
+}
+
 .butMenu
 {
 	display: inline-block;
@@ -502,36 +508,30 @@ body {
 	margin-left: 10px;
 }
 
-/* MODALES NUEVA CARPETA Y NUEVO FICHERO*/
+/* MODALES NUEVA CARPETA Y NUEVO FICHERO y compartir Carpeta*/
 .modalTit
 {
 	margin-top: 10px;
 	width:55%;
 }
 
-#mensajesCarpeta
+#mensajesFichero,#mensajesCarpeta,#mensajesCompartir
 {
 	margin-top: 15px;
 	margin-bottom: 0px;
 }
 
-#mensajesFichero
-{
-	margin-top: 15px;
-	margin-bottom: 0px;
-}
-
-#nombreFich,#nombreCarp
+#nombreFich,#nombreCarp,#nombreUs
 {
 	margin-top: 10px;
 	width:70%;
 }
-.modal-carp,.modal-fich
+.modal-carp,.modal-fich,.modal-comp
 {
 	height: 300px;
 	width:400px;
 }
-#contCarp,#contFich
+#contCarp,#contFich,#contComp
 {
 	height: 100%;
 	width:100%;
@@ -675,7 +675,7 @@ body {
 	float:left;
 	height: 50px;
 	width: 56px;
-	margin:0 10px;
+	margin:0 6px;
 	color:#000;
 	background-color: #BFDDFB;
 }
@@ -689,7 +689,7 @@ body {
 #estado
 {
 	margin-right: 10px;
-	width:50%;
+	width:40%;
 	height: 50px;
 	background-color: #EEEEEE;
 	border-radius: 4px;
@@ -789,21 +789,14 @@ body {
 }
 
 @media(max-width: 991px){
-	#colIz
-	{
-		height: 400px;
-	}
-	#colDer
-	{
-		height: 400px;
-	}
 	#fitx
 	{
 		float:left;
 		width:90%;
 		/*height: 330px;*/
-		height: 550px;
+		height: 100%;
 		margin-left: 30px;
+		overflow: scroll;
 	}
 	#jQ-menu
 	{
@@ -819,6 +812,21 @@ body {
 		width:30px;
 		background-color: green;
 		height: 550px;
+	}
+	#atras
+	{
+		float:left;
+		clear: both;
+	}
+	#controls
+	{
+		width:100%;
+		margin:25px 0;
+		height: 150px;
+	}
+	#cont
+	{
+		height: 100%
 	}
 
 }

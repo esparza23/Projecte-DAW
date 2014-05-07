@@ -1,0 +1,96 @@
+body {
+	margin: 0;
+	background: url('../images/backAdmin.png');
+}
+
+.modalTit
+{
+	margin-top: 10px;
+	width:55%;
+}
+
+#mens
+{
+	margin-top: 10px;
+	width:70%;
+}
+.modal-new
+{
+	height: 500px;
+}
+.item
+{
+	height: 40px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+.radio
+{
+	margin-left: 30px;
+}
+
+.modal-conf
+{
+	height: 200px;
+	width:400px;
+}
+#contConf,#contNew
+{
+	height: 100%;
+	width:100%;
+}
+#contNew h3
+{
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.butIzq
+{
+	
+	width: 50%;
+	float:left;
+	height: 50px;
+	margin-top: 20px;
+}
+.butDer
+{
+	width: 50%;
+	float:right;
+	height: 50px;
+	margin-top: 20px;
+}
+
+#nuevo
+{
+	margin-top:30px;
+	margin-bottom:30px;
+}
+
+.tit
+{
+	display: block;
+	text-align: center;
+}
+
+#users
+{
+	width:400px;
+	height: 200px;
+}
+.usuarioRow
+{
+	padding:10px 0;
+	border: 1px solid black;
+	box-sizing:border-box;
+}
+.usName
+{
+	font-size: 18px;
+	padding-left: 15px;
+	padding-top: 5px;
+	float:left;
+	display: block;
+	width:250px;
+}

@@ -70,7 +70,7 @@ var editorTextos =
 
                     };
                     editorTextos.editor.setOption("mode",mode);
-                    alert(editorTextos.editor.getOption("mode"));
+                    //alert(editorTextos.editor.getOption("mode"));
                 },1000);
             }
           });

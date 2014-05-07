@@ -8,6 +8,7 @@
     {
         $correo =  $_POST['emailReg'];
         $pass = $_POST['passReg'];
+        $admin = $_POST['admin'];
         
         session_start();
         include "config.php";
@@ -26,7 +27,7 @@
                 echo "no";
             else 
             {
-                $query = "INSERT INTO usuarios VALUES('$correo','$pass',1000000001,0)";
+                $query = "INSERT INTO usuarios VALUES('$correo','$pass',$admin,1000000001,0)";
                 if ($db->query($query))
                 {
                     echo "si";
@@ -36,6 +37,7 @@
                     mkdir("../Usuarios/tmp/".$usFolder);
                     mkdir("../Usuarios/".$usFolder."/Musica");
                     mkdir("../Usuarios/".$usFolder."/Fotos");
+                    mkdir("../Usuarios/".$usFolder."/Public");
                 }
                 else
                     echo"NOOOOO";

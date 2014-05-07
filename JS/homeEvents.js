@@ -13,13 +13,20 @@ jQuery(document).ready(function($) {
 	});
 	$("#nCarpeta").tooltip({
 		placement:"bottom",
-		title:"Nueva Carptea"
+		title:"Nueva Carpeta"
+	});
+	$("#cCarpeta").tooltip({
+		placement:"bottom",
+		title:"Compartir Carpeta Pública"
 	});
 	$("#upload").tooltip({
 		placement:"bottom",
 		title:"Subir Archivos"
 	});
-
+	$("#admin").tooltip({
+		placement:"bottom",
+		title:"Administración de usuarios"
+	});
 	$("#logout").tooltip({
 	placement:"bottom",
 	title:"Logout"

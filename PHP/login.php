@@ -23,6 +23,11 @@
             $rows_correu = $result->num_rows;
             if($rows_correu == 1 )
             {
+                $row = $result->fetch_array();
+                if($row[2]==1)
+                    $_SESSION['admin'] = true;
+                else
+                    $_SESSION['admin'] = false;
                 echo "si";
                 //Session o algo no?
                 $_SESSION['nom']=str_replace(".","_",$correo);

@@ -38,7 +38,7 @@ var reproductorVideo =
 	{
 		$('#modalVideo').modal('hide');
 		$("#video")[0].pause();
-		if(reproductorVideo.abierto)
+		if(reproductorMusica.abierto)
 			$("#audio")[0].play();
 		reproductorVideo.abierto = false;
 		reproductorVideo.reproduciendo = false;
