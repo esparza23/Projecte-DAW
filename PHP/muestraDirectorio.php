@@ -138,7 +138,7 @@
         if( $_SESSION['local'])
             $db = new mysqli("localhost","savecloud","savecloud","SaveCloud");
         else
-            $db = new mysqli("mysql2.000webhost.com","a1174599_cloud","ce3453275","a1174599_cloud");
+            $db = new mysqli("localhost","root","edualberdi","SaveCloud");
 
         $query = "UPDATE usuarios SET espacio_usado = '$disk_used' WHERE correo = '$correo'";
         $db->query($query); 
@@ -159,7 +159,7 @@
         
 
         $query = "SELECT * from compartidos WHERE destinatario = '$correo'";
-        
+        $compartidas = null;
         if ($result = $db->query($query))
         {
             while($row = $result->fetch_array())
@@ -167,14 +167,10 @@
                 $compartidas[] = Array($row[0],$row[1],$row[2],$row[3]);
             }
             $rows_correu = $result->num_rows;
-            $row = $result->fetch_array(MYSQLI_NUM);
-            $compartida = Array($row[0],$row[1],$row[2],$row[3]);
-            //var_dump($compartida);
             $result->close(); 
         }
         $db->close();
         array_push($array,$compartidas);
-        //var_dump($compartidas);
         echo json_encode($array);
     }
     else

@@ -12,24 +12,16 @@ jQuery(document).ready(function($) {
 	$("html, body").animate({ scrollTop: 0 }, "slow");  
 	
 	$("#masInfoText").click(function(e) { 
-	    //alert("HEI");
+	    //console.log("HEI");
 	    goToByScroll("info");           
 	});
 
 	$("#volverArribaText").click(function(e) { 
-	    //alert("HEI");
+	    //console.log("HEI");
 	     $("html, body").animate({ scrollTop: 0 }, "slow");   
 	});
 
 
-	$(function() {
-        $('#colIz').perfectScrollbar({
-		  wheelSpeed: 20,
-		  wheelPropagation: true,
-		  minScrollbarLength: 20,
-		  suppressScrollX:true
-		})
-    });
     $('#logSig').on('hidden.bs.modal', function (e) {
 		$("#emailLog").val("");
 		$("#passLog").val("");
@@ -56,7 +48,7 @@ function login()
        	dataType: "html",
        	error: function()
        	{
-        	alert("error petición ajax");
+        	console.log("error petición ajax");
        	},
        success: function(data)
        	{       
@@ -99,7 +91,7 @@ function registrar()
 	var emailReg= $("#emailReg").val();
 	var passReg = $("#passReg").val();
 	var passRegRep = $("#passRegRep").val();
-	//alert(passReg+" "+passRegRep);
+	//console.log(passReg+" "+passRegRep);
 	if(emailReg.trim() == "" )
 	{
 		$("#emailReg").parent().addClass('has-error');
@@ -141,11 +133,11 @@ function registrar()
 	       	dataType: "html",
 	       	error: function()
 	       	{
-	        	alert("error petición ajax");
+	        	console.log("error petición ajax");
 	       	},
 	       success: function(data)
 	       	{       
-	       		//alert(data);
+	       		//console.log(data);
 	       		switch(data)
 	       		{
 	       			case "si":

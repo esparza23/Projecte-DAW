@@ -9,12 +9,12 @@ barraLateral =
 	       	dataType: "html",
 	       	error: function()
 	       	{
-	        	alert("error petición ajax");
+	        	console.log("error petición ajax");
 	       	},
 	       success: function(data)
 	       	{ 
 	       		barraLateral.crear(data);
-	       		//$("#jQ-menu").children().children().children().click();
+	       		$("#jQ-menu").children().children().children().next().next().toggle(400);
 	       	}
 	    });
 	},
@@ -70,7 +70,7 @@ barraLateral =
 			{
 				ruta+="/"+div.attr("id");
 				div = div.parent().parent().prev();
-				//alert(div.attr("id"));
+				//console.log(div.attr("id"));
 			}
 			while(div.attr("id") != "unidad");
 			ruta = ruta.split("/").reverse().join("/");
@@ -94,7 +94,7 @@ barraLateral =
 		
 		// switch the plus to a minus sign or vice-versa
 		var v = $(this).html().substring( 0, 1 );
-		//alert($(this).next().children().length);
+		//console.log($(this).next().children().length);
 		if ($(this).attr("src") == "../images/foldClose.png" && $(this).next().next().children().length > 0)
 			$(this).attr("src","../images/foldOpen.png");
 		else if ( $(this).attr("src") == "../images/foldOpen.png" )

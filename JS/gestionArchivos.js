@@ -1,7 +1,7 @@
 var gestionArchivos = 
 {
 	types : Array("ai","aspx","bmp","c","cpp","css","dmg","doc","docx","exe","gif","h","html","iso","java","jpg","mp3","mp4","odp","pdf",
-	"php","png","ppt","psd","rar","sql","tgz","txt","xls","xlsx","xml","zip","js","odt","jpeg"),
+	"php","png","ppt","psd","rar","sql","tgz","txt","xls","xlsx","xml","zip","js","odt","jpeg","srt"),
 	rutaEnt : null,
 	usRuta : null,
 	ruta : null,
@@ -36,32 +36,32 @@ var gestionArchivos =
 	actualitzaProgressBar : function(porcen,ocupado,total)		//funcion para actualiza la progress bar de estado
 	{
 		$("#infoEstado").html(ocupado + " de " + total);
-		$(".progress-bar").css("width",porcen.toFixed(2)+"%");
-		$(".progress-bar").html(porcen.toFixed(2)+"%");
+		$("#estado").children().css("width",porcen.toFixed(2)+"%");
+		$("#estado").children().html(porcen.toFixed(2)+"%");
 
 		if(porcen<=50)
-			$(".progress-bar").removeClass(' progress-bar-danger').removeClass(' progress-bar-warning').addClass(' progress-bar-success');
+			$("#estado").children().removeClass(' progress-bar-danger').removeClass(' progress-bar-warning').addClass(' progress-bar-success');
 		else if(porcen<=80)
-			$(".progress-bar").removeClass(' progress-bar-danger').removeClass(' progress-bar-success').addClass(' progress-bar-warning');
+			$("#estado").children().removeClass(' progress-bar-danger').removeClass(' progress-bar-success').addClass(' progress-bar-warning');
 		else
-			$(".progress-bar").removeClass(' progress-bar-success').removeClass(' progress-bar-warning').addClass(' progress-bar-danger');
+			$("#estado").children().removeClass(' progress-bar-success').removeClass(' progress-bar-warning').addClass(' progress-bar-danger');
 	},
 	archivos : function(op,dir)		//Funcion que llama al servidor y muestra los ficheros del directorio pasado como parametro
 	{
 		selected = new Array();
 		$.ajax({
 	    	type: "POST",
-	       	url: "PHP/muestraDirectorio.php",
+	       	url: "../PHP/muestraDirectorio.php",
 	       	data: "op="+op+"&carpeta="+dir+"&ajax=ajax",
 	       	dataType: "html",
 	       	error: function()
 	       	{
-	        	alert("error petición ajax");
+	        	console.log("error petición ajax");
 	       	},
 	       success: function(data)
 	       	{ 
 	       		
-	       		//alert(data);
+	       		//console.log(data);
 	       		gestionArchivos.creaArchivos(data,op);
 	       	}
 		});
@@ -264,7 +264,7 @@ var gestionArchivos =
 	},
 	carpeta : function(div,nom)		//funcion que muestra los archivos que son carpeta
 	{
-		//alert("soy carpeta: "+carp[0][val]);
+		//console.log("soy carpeta: "+carp[0][val]);
 		div.append
 		(
 			$(document.createElement("li"))
@@ -285,8 +285,8 @@ var gestionArchivos =
 					.attr("id","span-"+nom)
 					.text(nom.replace("/",""))
        				.click(function(event) {
-       					//alert(event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
-       					gestionArchivos.archivos(1,event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
+       					//console.log(event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
+       					gestionArchivos.archivos(1,event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");	     
        				})
 			)
 		)
@@ -303,7 +303,7 @@ var gestionArchivos =
 	},
 	carpetaCompartida : function(div,nom)		//funcion que muestra los archivos que son carpeta
 	{
-		//alert("soy carpeta: "+nom);
+		//console.log("soy carpeta: "+nom);
 		div.append
 		(
 			$(document.createElement("li"))
@@ -324,7 +324,7 @@ var gestionArchivos =
 					.attr("id","span-"+nom)
 					.text(nom.replace("/",""))
        				.click(function(event) {
-       					//alert(event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
+       					//console.log(event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
        					gestionArchivos.archivos(4,event.target.id.replace("span-","").replace("img-","").replace("/","")+"/");
        				})
 			)
@@ -333,7 +333,10 @@ var gestionArchivos =
 	creaArchivos : function(data,op)		//funcion que mira que tipo de archivo hay que mostrar
 	{
 		var carp = $.parseJSON(data);
-		//console.log(carp);
+		if(carp[3].replace("/","").replace("/","")=="")
+			$("#carpActual").text("Mi unidad");
+		else
+			$("#carpActual").text(carp[3].replace("/","").replace("/",""));
 		//var div = $("#fitx"); 
 		var div = $("#llistaFitx"); 
 		div.empty();
@@ -351,20 +354,20 @@ var gestionArchivos =
 			gestionArchivos.ruta = carp[carp.length-6];
 		}
 
-		//alert(gestionArchivos.ruta);
+		//console.log(gestionArchivos.ruta);
 		gestionArchivos.usRuta = carp[carp.length-5];
 		gestionArchivos.rutaEnt = carp[carp.length-6];
 		gestionArchivos.historial = carp[carp.length-7];
-		//alert(carp);
+		//console.log(carp);
 		gestionArchivos.actualitzaProgressBar(carp[carp.length-2],carp[carp.length-3],carp[carp.length-4]);
-		//alert(gestionArchivos.rutaEnt);
-		//salert("gestionArchivos.ruta : "+gestionArchivos.ruta);
-		//alert(gestionArchivos.ruta);
+		//console.log(gestionArchivos.rutaEnt);
+		//sconsole.log("gestionArchivos.ruta : "+gestionArchivos.ruta);
+		//console.log(gestionArchivos.ruta);
 		//var tot = carp[0].length;
 		//console.log(tot);
-		//alert(tot);
+		//console.log(tot);
 		var i =0;
-		//alert(carp[0]);
+		//console.log(carp[0]);
 		reproductorMusica.songs =  new Array();
 		reproductorVideo.videos = new Array();
 		reproductorFotos.pictures = new Array();
@@ -484,7 +487,8 @@ var gestionArchivos =
 					case 34:
 						gestionArchivos.imagen(div,gestionArchivos.ruta,carp[0][val],"jpg",carp[1][val]);
 						break;
-					case -1:
+					case 35:
+						gestionArchivos.text(div,gestionArchivos.ruta,carp[0][val],"unk",carp[1][val]);
 						break;
 					default:
 						gestionArchivos.res(div,gestionArchivos.ruta,carp[0][val],"unk",carp[1][val]);
@@ -498,18 +502,17 @@ var gestionArchivos =
 		}
 		if(gestionArchivos.rutaEnt=="/")
 		{	
-			//alert(carp);
-			/*
-			if(true)
+			//console.log(carp);
+			if(carp[8]!=null)
 			{
 				for(j=0;j<carp[carp.length-1].length;j++)
 				{
 					gestionArchivos.carpetaCompartida(div,carp[carp.length-1][j][2]);	
 				}
-				//alert(carp[carp.length-1][0]);
-			}*/
+				//console.log(carp[carp.length-1][0]);
+			}
 		}
-		//alert(reproductorMusica.songs+reproductorVideo.videos+reproductorFotos.pictures);
+		//console.log(reproductorMusica.songs+reproductorVideo.videos+reproductorFotos.pictures);
 		if(gestionArchivos.carpPublic == false)
 			$("#llistaFitx").selectable(utilidades.selectable);
 	}

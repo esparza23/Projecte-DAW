@@ -15,8 +15,8 @@
 	        if( $_SESSION['local'])
 	            $db = new mysqli("localhost","savecloud","savecloud","SaveCloud");
 	        else
-	            $db = new mysqli("mysql2.000webhost.com","a1174599_cloud","ce3453275","a1174599_cloud");
-
+	            $db = new mysqli("localhost","root","edualberdi","SaveCloud");
+	        
 	        $query = "SELECT * from usuarios WHERE correo = '$correo' ";
 	        if ($result = $db->query($query))
 	        {
@@ -24,12 +24,18 @@
 	            if($rows_correu == 1 )
 	            {
 	            	$ruta = "/".str_replace(".","_",$usuario)."/Public";
-	                $query = "INSERT INTO compartidos VALUES('$usuario','$correo','$ruta','L')";
-	                if ($result = $db->query($query))
+	                $queryInsert = "INSERT INTO compartidos VALUES('$usuario','$correo','$ruta','L')";
+	                echo $ruta." - ".$queryInsert;
+	                $res = $db->query($queryInsert);
+	                /*
+	                if ($res = $db->query($queryInsert))
 	        		{
-	                	echo $query;
+	                	echo "SEP";//echo $query;
 	                }
-	                else echo "3";
+	                else 
+	                	echo "3";
+	                $res->close(); 
+	                */
 	            }
 	            else 
 	                echo "2";

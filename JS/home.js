@@ -11,12 +11,16 @@ var application =
 	{
 		$('#modalRes').modal('hide')
 	},
+	clickCierraCarga : function()
+	{
+		$('#modalCarga').modal('hide')
+	},
 	crearCarpeta : function()
 	{
 		var nombreCarp = $("#nombreCarp").val().trim();
 		if(nombreCarp=="")
 			nombreCarp="Nueva Carpeta";
-		if(nombreCarp.indexOf(".")!=-1 || nombreCarp.indexOf("#")!=-1 || nombreCarp.indexOf("(")!=-1 ||
+		else if(nombreCarp.indexOf(".")!=-1 || nombreCarp.indexOf("#")!=-1 || nombreCarp.indexOf("(")!=-1 ||
 		nombreCarp.indexOf(")")!=-1 || nombreCarp.indexOf("/")!=-1 || nombreCarp.indexOf("@")!=-1)
 			utilidades.mensaje("#mensajesCarpeta","El nombre no puede tener ninguno de los siguientes carácteres: . # ( ) / @.");
 		else
@@ -28,12 +32,12 @@ var application =
 		       	dataType: "html",
 		       	error: function()
 		       	{
-		        	alert("error petición ajax");
+		        	console.log("error petición ajax");
 		       	},
 		       success: function(data)
 		       	{ 
 		       		console.log(data);
-					//alert("Crear Carpeta");
+					//console.log("Crear Carpeta");
 					gestionArchivos.archivos("same");
 					$('#modalNuevaCarpeta').modal('hide');
 					barraLateral.cogeInfo();
@@ -45,11 +49,11 @@ var application =
 	{
 		var nombreFich = $("#nombreFich").val().trim();
 		if(nombreFich=="")
-			nombreFich="Nueva Carpeta";
+			nombreFich="Nueva fichero";
 		if(nombreFich.indexOf("#")!=-1 || nombreFich.indexOf("(")!=-1 ||
 		nombreFich.indexOf(")")!=-1 || nombreFich.indexOf("/")!=-1 || nombreFich.indexOf("@")!=-1)
-			utilidades.mensaje("#mensajesFichero","El nombre no puede tener ninguno de los siguientes carácteres: . # ( ) / @.");
-		if(nombreFich.indexOf(".")!=nombreFich.lastIndexOf("."))
+			utilidades.mensaje("#mensajesFichero","El nombre no puede tener ninguno de los siguientes carácteres: # ( ) / @.");
+		else if(nombreFich.indexOf(".")!=nombreFich.lastIndexOf("."))
 			utilidades.mensaje("#mensajesFichero","El nombre solo puede contener un punto.");
 		else
 		{
@@ -66,7 +70,7 @@ var application =
 			       	dataType: "html",
 			       	error: function()
 			       	{
-			        	alert("error petición ajax");
+			        	console.log("error petición ajax");
 			       	},
 			       success: function(data)
 			       	{ 
@@ -86,15 +90,15 @@ var application =
 			utilidades.mensaje("#mensajesCompartir","Debes introducir un nombre de usuario.");
 		else
 		{
-			//alert(nombreUs);
+			//console.log(nombreUs);
 			$.ajax({
 		    	type: "POST",
 		       	url: "PHP/compCarpeta.php",
 		       	data: "nombre="+nombreUs+"&ajax=ajax",
 		       	dataType: "html",
-		       	error: function()
+		       	error: function( jqXHR,textStatus, errorThrown)
 		       	{
-		        	alert("error petición ajax");
+		        	console.log("error petición ajax "+ errorThrown+ " - "+textStatus);
 		       	},
 		       success: function(data)
 		       	{ 
@@ -110,7 +114,7 @@ var application =
 		       				utilidades.mensaje("#mensajesCompartir","Ya compartes la carpeta con este usuario.");
 		       				break;
 		       			default:
-		       				alert(data);
+		       				console.log(data);
 		       				break;
 		       		}
 		       	}
@@ -121,35 +125,26 @@ var application =
 var primer = true;
 jQuery(document).ready(function($) {
 
-	/*
-	$("#back3").css("background-position","200% 0%");
-	$("#back2").css("background-position","200% 0%");
-	$("#back1").css("background-position","200% 0%");
-	*/
-	/*
-	$( "#back3" ).animate({
-	  'background-position-x': '105%',
-	  'background-position-y': '0%'
-		}, 'linear', function() {
-			
+
+
+
+	$(function(){
+	    $('#fitx').slimScroll({
+			height:"450px",
+			width:"95%",
+		    color: '#000',
+		    size: '10px',
+		    railVisible: true,
+		    railColor: '#beb6be',
+		    railOpacity: 1
+	    });
 	});
-	$( "#back2" ).animate({
-	  'background-position-x': '200%',
-	  'background-position-y': '0%'
-		}, 'linear', function() {
-			
-	});
-	$( "#back1" ).animate({
-	  'background-position-x': '300%',
-	  'background-position-y': '0%'
-		}, 'linear', function() {
-			
-	});
-	*/
 
 	$("#closePDF").click(application.clickCierraPDF);
 
 	$("#closeRes").click(application.clickCierraRes);
+
+	$("#closeCarga").click(application.clickCierraCarga);
 
 	$("#acCarp").unbind('click').click(application.crearCarpeta);
 
@@ -184,6 +179,53 @@ jQuery(document).ready(function($) {
 	 	{
 	 		$("#jQ-menu").css("width","0").css("opacity","0");
 	 	}
+
+	 	if($(window).width()>=1121)
+	 	{
+	 		$(function(){
+	 			$('#fitx').slimScroll({destroy: true});
+			    $('#fitx').slimScroll({
+					height:"450px",
+					width:"95%",
+				    color: '#000',
+				    size: '10px',
+				    railVisible: true,
+				    railColor: '#beb6be',
+				    railOpacity: 1
+			    });
+			});
+	 	}
+	 	else if($(window).width()<1121 &&  $(window).width()>=678)
+	 	{
+	 		$(function(){
+	 			$('#fitx').slimScroll({destroy: true});
+			    $('#fitx').slimScroll({
+					height:"360px",
+					width:"95%",
+				    color: '#000',
+				    size: '10px',
+				    railVisible: true,
+				    railColor: '#beb6be',
+				    railOpacity: 1
+			    });
+			});
+	 	}
+	 	else if($(window).width()<678  )
+	 	{
+	 		$(function(){
+	 			$('#fitx').slimScroll({destroy: true});
+			    $('#fitx').slimScroll({
+					height:"300px",
+					width:"95%",
+				    color: '#000',
+				    size: '10px',
+				    railVisible: true,
+				    railColor: '#beb6be',
+				    railOpacity: 1
+			    });
+			});
+	 	}
+
 	});
 
 });

@@ -24,24 +24,24 @@ var reproductorFotos =
 	       	dataType: "html",
 	       	error: function()
 	       	{
-	        	alert("error petición ajax");
+	        	console.log("error petición ajax");
 	       	},
 	       success: function(data)
 	       	{ 
 	       		console.log(data);
 	       		//Treure el timeout x comprobar en entorns reals la carrega
 	       		setTimeout(function(){
-		       		//alert(data);
+		       		//console.log(data);
 		       		var dimensions = data.split("/");
 		       		var w = parseInt(dimensions[0]);
 		       		var h = parseInt(dimensions[1]);
-		       		//alert(h+" - "+w);
+		       		//console.log(h+" - "+w);
 		       		do
 		       		{
 		       			h/=1.5;
 		       			w/=1.5;
 		       		}while(h>600 || w>600);
-		       		//alert(reproductorFotos.rutaFoto);
+		       		//console.log(reproductorFotos.rutaFoto);
 		       		$("#nameImg").children().text(nombreImagen.replace(reproductorFotos.rutaFoto,""));
 					$("#imagen").attr("src",nombreImagen);
 					$("#imagen").on('load', function () {

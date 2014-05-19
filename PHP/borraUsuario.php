@@ -1,7 +1,6 @@
 <?php 
     /*
-    PHP que se conecta a la base de datos para comprobar si el correo existe para poder loguearse.
-    Si existe devolvemos un si y vamos a la pagina de inicio del usuario. En caso contrario devolvemos un no.
+    
     */
     $ajax = $_POST['ajax'];
     if($ajax == "ajax")
@@ -15,7 +14,7 @@
         if( $_SESSION['local'])
             $db = new mysqli("localhost","savecloud","savecloud","SaveCloud");
         else
-            $db = new mysqli("mysql2.000webhost.com","a1174599_cloud","ce3453275","a1174599_cloud");
+            $db = new mysqli("localhost","root","edualberdi","SaveCloud");
 
         //borramos si tiene carpetas compartidas
         $query = "DELETE FROM compartidos WHERE propietario='$usuario' OR destinatario='$usuario'";

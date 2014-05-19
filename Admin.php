@@ -28,24 +28,12 @@
 		<button data-toggle='modal' data-target='#modalNew' id="nuevo" class="btn btn-success center-block"><span class='glyphicon glyphicon-plus'></span>Nuevo Usuario</button>
 		<div id="users" class="center-block">
 		<?php
-	        if( $_SESSION['local'])
-	            $db = new mysqli("localhost","savecloud","savecloud","SaveCloud");
-	        else
-	            $db = new mysqli("mysql2.000webhost.com","a1174599_cloud","ce3453275","a1174599_cloud");
-
-			//echo "SI";
-			$correo = str_replace("_",".",$_SESSION['nom']);
-			$query = "SELECT * from usuarios WHERE correo <> '$correo'";
-    
-	        if ($result = $db->query($query))
-	        {
-	            while($row = $result->fetch_array())
-	            {
-	                echo "<div class='usuarioRow'><span class='usName'>".$row[0]."</span><button data-toggle='modal' data-target='#modalConfirmar' us='".$row[0]."' class='btn btn-danger borrar'><span class='glyphicon glyphicon-trash'></span>Borrar usuario</button></div>";
-	            }
-	            $result->close(); 
-	        }
-	        $db->close();
+	        echo
+	        '
+				<script>
+					admin.muestraUs();
+				</script>
+			'
 		?>
 		</div>
 		</br>
@@ -57,8 +45,8 @@
 				<div id="contConf" class="modal-content">
 					<div class="form-group">
 						<label id="mens" class="center-block modalTit">Nombre del usuario</label>
-						<div class="butIzq" ><button id="acNew" data-dismiss="modal" class="btn btn-success center-block">Aceptar</button></div>
-						<div class="butDer" ><button id="cancNew" data-dismiss="modal" class="btn btn-danger center-block">Cancelar</button></div>
+						<div class="butIzq" ><button id="acDel" data-dismiss="modal" class="btn btn-success center-block">Aceptar</button></div>
+						<div class="butDer" ><button id="cancDel" data-dismiss="modal" class="btn btn-danger center-block">Cancelar</button></div>
 					</div>
 				</div>
 			</div>

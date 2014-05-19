@@ -2,6 +2,7 @@
 
 jQuery(document).ready(function($) {
 
+
 	/* Tooltips de los botones de navegacion superiores*/
 	$("#atras").tooltip({
 		placement:"bottom",
@@ -34,11 +35,14 @@ jQuery(document).ready(function($) {
 
 	/* Eventos de click par subir archivo, y detectar los archivos subidos */
 
-	$("#upload").unbind('click').click(function(event) {
-		$("#fileUpload").click();
-	});
+	$('#modalCarga').on('hidden.bs.modal', function (e) {
+		
+	})
+
 
 	$("#fileUpload").change(function(event) {
+
+		var porcen;
 		var xhr = new XMLHttpRequest();
 		// Add any event handlers here...
 		var fileInput = document.getElementById('fileUpload');
@@ -54,23 +58,42 @@ jQuery(document).ready(function($) {
 				processData:false,
 				contentType:false,
 				type:'POST',
-				xhrFields: {
-					onprogress: function (progress) {
-			        // calculate upload progress
-			        var percentage = Math.floor((progress.total / progress.totalSize) * 100);
-			        // log upload progress to console
-			        console.log('progress', percentage);
-			        if (percentage === 100) {
-			          console.log('DONE!');
-			        }
-			      }
+				beforeSend: function()
+				{
+					console.log("antes de enviar");
+					$("#modalCarga").modal("show");
+				},
+				xhr: function(){
+					var xhr = new window.XMLHttpRequest();
+					//Upload progress
+					xhr.upload.addEventListener("progress", function(evt){
+						if (evt.lengthComputable ) {
+							var percentComplete = evt.loaded / evt.total;
+							//Do something with upload progress
+							porcen = percentComplete;
+							$("#cargaTotal").css("width",percentComplete*100+"%");
+						}
+					}, false);
+					//Download progress
+					/*
+					xhr.addEventListener("progress", function(evt){
+						if (evt.lengthComputable) {
+							var percentComplete = evt.loaded / evt.total;
+							//Do something with download progress
+							console.log(percentComplete);
+						}
+					}, false);
+					*/
+					return xhr;
 				},
 		       	error: function()
 		       	{
-		        	alert("error petición ajax");
+		        	console.log("error petición ajax");
 		       	},
 		       success: function(data)
 		       	{ 
+		       		//$("#cargaParcial").css("width","0%");
+		       		console.log("acabo - "+porcen);
 		       		console.log(data);
 		       		gestionArchivos.archivos("same");
 		       	}
@@ -80,8 +103,8 @@ jQuery(document).ready(function($) {
 
 	//Controlamos el click en el boton atras del menu.
 	$("#atras").unbind('click').click(function(event) {
-		//alert(gestionArchivos.historial);
-		//alert(gestionArchivos.usRuta);
+		//console.log(gestionArchivos.historial);
+		//console.log(gestionArchivos.usRuta);
 		if(gestionArchivos.historial[gestionArchivos.historial.length-2].indexOf('@')==-1)
 			gestionArchivos.archivos(2,"");
 		else 
@@ -97,11 +120,11 @@ jQuery(document).ready(function($) {
 	       	dataType: "html",
 	       	error: function()
 	       	{
-	        	alert("error petición ajax");
+	        	console.log("error petición ajax");
 	       	},
 	       success: function(data)
 	       	{ 
-	       		alert("logout");
+	       		console.log("logout");
    				//redireccionar.
    				location.href="/";
 	       	}

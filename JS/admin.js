@@ -1,28 +1,55 @@
+/*
+Libreria para gestionar la pagina de admin.php
+*/
 
-jQuery(document).ready(function($) {
-	var usuario;
-	$(".borrar").unbind('click').click(function(event) {
-		usuario = $(this).attr("us");
-		$("#mens").text("Seguro que quieres borrar a "+usuario);
-	});
-	$("#acNew").unbind('click').click(function(event) {
+var admin = 
+{
+	usuario : null,
+
+	muestraUs : function()
+	{
 		$.ajax({
 	    	type: "POST",
-	       	url: "../PHP/borraUsuario.php",
-	       	data: "usuario="+usuario+"&ajax=ajax",
+	       	url: "../PHP/admin.php",
 	       	dataType: "html",
 	       	error: function()
 	       	{
-	        	alert("error petición ajax");
+	        	console.log("error petición ajax");
+	       	},
+	       success: function(data)
+	       	{   
+	       		$("#users").empty();    
+	       		$("#users").append(data);
+				$(".borrar").unbind('click').click(admin.confBorrar);
+				$("#acDel").unbind('click').click(admin.deleteUs);
+				$("#acUser").unbind('click').click(admin.nuevoUs);
+	       	}
+	    });
+	},
+	confBorrar  : function(event)
+	{
+		admin.usuario = $(this).attr("us");
+		$("#mens").text("¿ Seguro que quieres borrar a "+admin.usuario+" ?");
+	},
+	deleteUs : function(event)
+	{
+		$.ajax({
+	    	type: "POST",
+	       	url: "../PHP/borraUsuario.php",
+	       	data: "usuario="+admin.usuario+"&ajax=ajax",
+	       	dataType: "html",
+	       	error: function()
+	       	{
+	        	console.log("error petición ajax");
 	       	},
 	       success: function(data)
 	       	{       
-	       		alert(data);
+	       		admin.muestraUs();
 	       	}
 	    });
-	});
-
-	$("#acUser").unbind('click').click(function(event) {
+	},
+	nuevoUs : function()
+	{
 		$("#emailAdmin").parent().removeClass('has-error');
 		$("#passAdmin").parent().removeClass('has-error');
 		$("#confPassAdmin").parent().removeClass('has-error');
@@ -79,15 +106,16 @@ jQuery(document).ready(function($) {
 		       	dataType: "html",
 		       	error: function()
 		       	{
-		        	alert("error petición ajax");
+		        	console.log("error petición ajax");
 		       	},
 		       success: function(data)
 		       	{       
-		       		//alert(data);
+		       		//console.log(data);
 		       		switch(data)
 		       		{
 		       			case "si":
 		       				utilidades.mensaje("#succAdmin","Usuario registrado! ");
+		       				admin.muestraUs();
 		       				break;
 		       			case "no":
 		       				utilidades.mensaje("#errorAdmin","Este correo ya está registrado!");
@@ -96,5 +124,6 @@ jQuery(document).ready(function($) {
 		       	}
 		    });
 		}
-	});
-});
+	}
+
+}

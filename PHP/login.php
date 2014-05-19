@@ -15,7 +15,11 @@
         if( $_SESSION['local'])
             $db = new mysqli("localhost","savecloud","savecloud","SaveCloud");
         else
-            $db = new mysqli("mysql2.000webhost.com","a1174599_cloud","ce3453275","a1174599_cloud");
+            $db = new mysqli("localhost","root","edualberdi","SaveCloud");
+
+        if ($db->connect_error) {
+            die('Connect Error (' . $db->connect_errno . ') ' . $db->connect_error);
+}
 
         $query = "SELECT * from usuarios WHERE correo = '$correo' AND password = '$pass'";
         if ($result = $db->query($query))

@@ -10,7 +10,7 @@ var editorTextos =
         //Arreglar esta linnea para ficheros compartidos
         //ruta = ruta.replace(gestionArchivos.usRuta,"");
         
-        //alert(ruta);
+        //console.log(ruta);
         $("#textDiv").addClass('hidden');
         $("#cargandoText").removeClass('hidden');
         $.ajax({
@@ -20,7 +20,7 @@ var editorTextos =
             dataType: "html",
             error: function()
             {
-             alert("error petición ajax");
+             console.log("error petición ajax");
             },
             success: function(data)
             { 
@@ -70,7 +70,7 @@ var editorTextos =
 
                     };
                     editorTextos.editor.setOption("mode",mode);
-                    //alert(editorTextos.editor.getOption("mode"));
+                    //console.log(editorTextos.editor.getOption("mode"));
                 },1000);
             }
           });
@@ -81,7 +81,7 @@ var editorTextos =
         //console.log($("#nameFitx").text());
         //console.log($("#nameFitx").attr("ruta"));
         //console.log(editor.getValue());
-        alert("HOLA");
+        //console.log("HOLA");
         $.ajax({
             type: "POST",
             url: "PHP/guardarFichero.php",
@@ -89,7 +89,7 @@ var editorTextos =
             dataType: "html",
             error: function()
             {
-                alert("error petición ajax");
+                console.log("error petición ajax");
             },
             success: function(data)
             { 

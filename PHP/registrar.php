@@ -16,7 +16,7 @@
         if( $_SESSION['local'])
             $db = new mysqli("localhost","savecloud","savecloud","SaveCloud");
         else
-           $db = new mysqli("mysql2.000webhost.com","a1174599_cloud","ce3453275","a1174599_cloud");
+          $db = new mysqli("localhost","root","edualberdi","SaveCloud");
        
         $query = "SELECT * from usuarios WHERE correo = '$correo'";
        

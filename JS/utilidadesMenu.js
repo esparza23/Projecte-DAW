@@ -9,9 +9,9 @@ var utilidadesMenu =
 	{
 		if(event.which == 3)
 		{
-			//alert(gestionArchivos.carpPublic);
+			//console.log(gestionArchivos.carpPublic);
 			var name = event.target.id.replace("span-","");
-			//alert(name);
+			//console.log(name);
 	    	if(utilidadesMenu.selected.indexOf(name)==-1)
 	    	{
 		    	$(' .ui-selected').removeClass('ui-selected');
@@ -38,7 +38,7 @@ var utilidadesMenu =
 
 				
 
-				if(utilidadesMenu.selected.length > 1)
+				if(utilidadesMenu.selected.length > 1 || utilidadesMenu.selected[0][0]=='/')
 					$("#butCambiarNom").children().addClass("disabled");
 				else
 					$("#butCambiarNom").children().removeClass("disabled");
@@ -62,13 +62,13 @@ var utilidadesMenu =
 	clickDescargar : function()
 	{
 		//Plantear el ajax, y cuando vuelva....descargar
-		utilidadesMenu.descargaMenu(selected);
+		utilidadesMenu.descargaMenu(utilidadesMenu.selected);
 	},
 	clickCopia : function() 
 	{
 		utilidadesMenu.rutaCopy = gestionArchivos.ruta;
 		utilidadesMenu.copiados = utilidadesMenu.selected;
-		//alert(utilidadesMenu.copiados);
+		//console.log(utilidadesMenu.copiados);
 	},
 	clickPegar : function(event) 
 	{
@@ -89,22 +89,32 @@ var utilidadesMenu =
 	},
 	clickCambiarNombre : function(event) 
 	{
-		if(!$("#butCambiarNom").children().hasClass("disabled"))
+		if(!$("#butCambiarNom").children().hasClass("disabled") )
 		{
-			//alert("cambiare el nom a #span-"+selected[0]);
+			var fichero = utilidadesMenu.selected[0];
+			var nomFitx = $('span[id="span-'+utilidadesMenu.selected[0]+'"]').text();
+			var ext = fichero.slice(fichero.lastIndexOf(".")+1,fichero.length);
 			$('span[id="span-'+utilidadesMenu.selected[0]+'"]').empty();
 			$('span[id="span-'+utilidadesMenu.selected[0]+'"]').append
 			(
 				$(document.createElement("input"))
 					.attr("id","textNom")
 					.attr("type","text")
-					.attr("placeholder","Nuevo nombre")
+					.css("width","80%")
+					.val(fichero.replace("."+ext,""))
 			)
 			$('#textNom').focus();
 			$('#textNom').focusout(function(event) {
-				//alert("cambiare el nom a "+$('#textNom').val());
-				$(this).remove();
-				$('span[id="span-'+utilidadesMenu.selected[0]+'"]').text("canviooooo");
+				utilidadesMenu.cambiaNombre(fichero,ext,event);
+			});
+			$('#textNom').keypress(function(event) {
+				//console.log(event.keyCode);
+				switch(event.keyCode)
+				{
+					case 13:
+						utilidadesMenu.cambiaNombre(fichero,ext,event);
+						break;
+				}
 			});
 
 		}
@@ -112,7 +122,7 @@ var utilidadesMenu =
 	clickEliminar : function(event) 
 	{
 		//Esto habra que llamarlo cuando clickemos a borrar...
-		//alert(utilidadesMenu.id);
+		//console.log(utilidadesMenu.id);
 		if(utilidadesMenu.selected.length==0)
 		{
 			utilidadesMenu.deleteMenu(utilidadesMenu.id);
@@ -127,7 +137,7 @@ var utilidadesMenu =
 	},
 	descargaMenu : function(archivos)
 	{
-		//alert(archivos);
+		//console.log(archivos);
 		$.ajax({
 			type: "POST",
 		   	url: "PHP/creaDescarga.php",
@@ -135,12 +145,12 @@ var utilidadesMenu =
 		   	dataType: "html",
 		   	error: function()
 		   	{
-		    	alert("error petición ajax");
+		    	console.log("error petición ajax");
 		   	},
 		   success: function(data)
 		   	{ 
-		   		console.log(data);
-				//alert("Crear Carpeta");
+		   		//console.log(data);
+				//console.log("Crear Carpeta");
 				$("#desc").attr("href",data);
 				$("#desc")[0].click();
 		   	}
@@ -148,7 +158,7 @@ var utilidadesMenu =
 	},
 	pasteMenu : function (id,rutaCopy)
 	{
-		//alert(id+" - "+rutaCopy);
+		//console.log(id+" - "+rutaCopy);
 		var carp = 0;
 		if(id[0]=='/')
 			carp = 1;
@@ -159,11 +169,11 @@ var utilidadesMenu =
 	       	dataType: "html",
 	       	error: function()
 	       	{
-	        	alert("error petición ajax");
+	        	console.log("error petición ajax");
 	       	},
 	       success: function(data)
 	       	{ 
-	       		alert(data);
+	       		console.log(data);
 	       		if(data == "NO")
 	       		{
 	       			utilidades.mensaje("#mensajes","<strong>ERROR!</strong> No puedes copiar una carpeta dentro de si misma.");
@@ -189,12 +199,13 @@ var utilidadesMenu =
 			       	dataType: "html",
 			       	error: function()
 			       	{
-			        	alert("error petición ajax");
+			        	console.log("error petición ajax");
 			       	},
 			       success: function(data)
 			       	{ 
 			       		console.log(data);
 						gestionArchivos.archivos(0,"same");
+						barraLateral.cogeInfo();
 			       	}
 			    });
 			}
@@ -209,12 +220,54 @@ var utilidadesMenu =
 		       	dataType: "html",
 		       	error: function()
 		       	{
-		        	alert("error petición ajax");
+		        	console.log("error petición ajax");
 		       	},
 		       success: function(data)
 		       	{ 
 		       		console.log(data);
-					//alert("Crear Carpeta");
+					//console.log("Crear Carpeta");
+					gestionArchivos.archivos(0,"same");
+		       	}
+		    });
+		}
+	},
+	cambiaNombre : function(fichero,ext,event)
+	{
+
+		//console.log("cambiare el nom a "+$('#textNom').val());
+		var nom = $('#textNom').val();
+		if(nom=="")
+			nom="Nuevo fichero";
+		if(nom.indexOf("#")!=-1 || nom.indexOf("(")!=-1 ||
+		nom.indexOf(")")!=-1 || nom.indexOf("/")!=-1 || nom.indexOf("@")!=-1)
+		{
+			utilidades.mensaje("#mensajes","El nombre no puede tener ninguno de los siguientes carácteres: . # ( ) / @.");
+			$(this).remove();
+			$('span[id="span-'+utilidadesMenu.selected[0]+'"]').text(nomFitx);
+
+		}
+		else if(nom.indexOf(".")!=nom.lastIndexOf("."))
+		{
+			utilidades.mensaje("#mensajes","El nombre solo puede contener un punto.");
+			$(this).remove();
+			$('span[id="span-'+utilidadesMenu.selected[0]+'"]').text(nomFitx);
+
+		}
+		else
+		{
+			$(this).remove();
+			$.ajax({
+		    	type: "POST",
+		       	url: "PHP/cambiarNombre.php",
+		       	data: "fichero="+fichero+"&nombre="+nom+"&ext="+ext+"&ajax=ajax",
+		       	dataType: "html",
+		       	error: function()
+		       	{
+		        	console.log("error petición ajax");
+		       	},
+		       success: function(data)
+		       	{ 
+		       		//console.log(data);
 					gestionArchivos.archivos(0,"same");
 		       	}
 		    });

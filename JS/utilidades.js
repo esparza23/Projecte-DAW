@@ -40,7 +40,7 @@ var utilidades =
         		var n = $( this ).attr("id").replace("span-","");
         	});
         	console.log("selected: "+utilidadesMenu.selected);
-        	//alert(selected);
+        	//console.log(selected);
   		}
 	},
 	droppableArchivos : 	//objeto para pasar a las carpetas droppable de gestionArchivos
@@ -57,7 +57,7 @@ var utilidades =
 			/* Comprobar que no movamos una carpeta dentro de si mismo */
 			var mov = true;
 			$.each(utilidadesMenu.selected, function(index, val) {
-				//alert("/"+val+" - "+event.target.id.replace("span-","").replace("img-",""));
+				//console.log("/"+val+" - "+event.target.id.replace("span-","").replace("img-",""));
 				if(event.target.id.replace("span-","").replace("img-","").indexOf(val)!=-1)
 					mov = false;
 			});
@@ -68,17 +68,18 @@ var utilidades =
 			{
 				$.ajax({
 	            type: "POST",
-	            	url: "PHP/moverArchivos.php",
+	            	url: "../PHP/moverArchivos.php",
 					data: "ficheros="+JSON.stringify(utilidadesMenu.selected)+"&destino="+gestionArchivos.ruta+event.target.id.replace("span-","").replace("img-","")+"&ajax=ajax",
 					dataType: "html",
 					error: function()
 					{
-						alert("error petición ajax");
+						console.log("error petición ajax");
 					},
 					success: function(data)
 					{ 
-						//alert(data);
+						console.log(data);
 						gestionArchivos.archivos("same");
+						barraLateral.cogeInfo();
 					}
 	          	});
 			}
@@ -86,8 +87,8 @@ var utilidades =
 	},
 	droppableBarraLateral : 		//objeto para pasar a las carpetas droppable de barraLAteral
 	{
-		hoverClass:"hover",
-		activeClass:"active",
+		hoverClass:"hoverBar",
+		activeClass:"activeBar",
 		tolerance: "pointer",
 		drop: function( event, ui ) {
 			
@@ -100,18 +101,18 @@ var utilidades =
 				{
 					ruta+="/"+div.attr("id");
 					div = div.parent().parent().prev();
-					//alert(div.attr("id"));
+					//console.log(div.attr("id"));
 				}
 				while(div.attr("id") != "unidad");
 			}
 			
 			ruta = gestionArchivos.usRuta+"/"+ruta.split("/").reverse().join("/");
-			//alert(ruta);
+			//console.log(ruta);
 			var mov = true;
-			//alert(gestionArchivos.rutaEnt);
+			//console.log(gestionArchivos.rutaEnt);
 			$.each(utilidadesMenu.selected, function(index, val) {
 				var tot = gestionArchivos.usRuta+gestionArchivos.rutaEnt+val;
-				//alert(ruta+" - "+tot);
+				//console.log(ruta+" - "+tot);
 				if(ruta.indexOf(tot)!=-1 )
 					mov = false;
 			});
@@ -121,17 +122,18 @@ var utilidades =
 			{
 				$.ajax({
 	            	type: "POST",
-	            	url: "PHP/moverArchivos.php",
+	            	url: "../PHP/moverArchivos.php",
 					data: "ficheros="+JSON.stringify(utilidadesMenu.selected)+"&destino="+ruta+"&ajax=ajax",
 					dataType: "html",
 					error: function()
 					{
-						alert("error petición ajax");
+						console.log("error petición ajax");
 					},
 					success: function(data)
 					{ 
-						//alert(data);
-						gestionArchivos.archivos("same");
+						//console.log(data);
+						gestionArchivos.archivos("same");					
+						barraLateral.cogeInfo();
 					}
 	          	});
 			}

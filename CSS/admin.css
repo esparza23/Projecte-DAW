@@ -84,6 +84,7 @@ body {
 	padding:10px 0;
 	border: 1px solid black;
 	box-sizing:border-box;
+	height: 60px;
 }
 .usName
 {
@@ -93,4 +94,15 @@ body {
 	float:left;
 	display: block;
 	width:250px;
+}
+@media(max-width: 767px){
+	#users
+	{
+		width:100%;
+	}
+	.borrar
+	{
+		float: right;
+		margin-right: 15px;
+	}
 }

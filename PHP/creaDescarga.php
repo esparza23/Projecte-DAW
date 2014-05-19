@@ -27,7 +27,6 @@
         //echo array_search("adios", array("hola","adios"));
 
         $zipname = '../Usuarios/tmp/'.$correo.'/download'.$_SESSION['numDown'].'.zip';
-        echo $zipname;
         unlink($zipname);
         $zip = new ZipArchive;
         $res = $zip->open($zipname, ZipArchive::CREATE);
@@ -51,6 +50,7 @@
             $zip->close();
         }
         $_SESSION['numDown']+=1;
+        echo $zipname;
     }
     else
     {

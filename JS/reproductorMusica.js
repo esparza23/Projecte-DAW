@@ -24,7 +24,7 @@ var reproductorMusica =
 	},
 	abrir : function(rutaAudio,nom)		//funcion que abre el reproductor de musica con la cancion que recibe
 	{
-		//alert(reproductorMusica.songs.indexOf(rutaAudio+nom));
+		//console.log(reproductorMusica.songs.indexOf(rutaAudio+nom));
 		reproductorMusica.songsPlaying = reproductorMusica.songs;
 		reproductorMusica.indexSong = reproductorMusica.songsPlaying.indexOf(rutaAudio+nom);
 		$("#repMusica").animate({
@@ -105,8 +105,12 @@ var reproductorMusica =
 		//console.log(event.keyCode);
 		if(reproductorMusica.abierto  && !reproductorVideo.abierto && !reproductorFotos.abierto)
 		{
+			//console.log(event.keyCode);
 			switch(event.keyCode)
 			{
+				case 27:
+					reproductorMusica.cerrar();
+					break;
 				case 37:
 					reproductorMusica.prevSong();
 					break;

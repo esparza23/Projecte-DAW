@@ -7,14 +7,11 @@
 		<script src="Jquery/jquery-ui-1.10.3.js" type="text/javascript"></script>
 		<script src="Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 		<script src="JS/index.js" type="text/javascript"></script>
-		<script src="Scrollbar/perfect-scrollbar.js" type="text/javascript"></script>
-		<script src="Scrollbar/jquery.mousewheel.js" type="text/javascript"></script>
 		<script src="JS/utilidades.js" type="text/javascript"></script>
 
 		<link rel="stylesheet" type="text/css" href="Bootstrap/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="Jquery/jquery-ui-1.10.3.css">
 		<link rel="stylesheet" type="text/css" href="CSS/index.css">
-		<link rel="stylesheet" type="text/css" href="Scrollbar/perfect-scrollbar.css">
 		<link rel="stylesheet" type="text/css" href="CSS/flaticon.css">
 	</head>
 	<body>

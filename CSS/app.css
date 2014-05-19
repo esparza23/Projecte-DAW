@@ -1,10 +1,9 @@
 body {
 	margin: 0;
-	background-color: #f0ffff;
-	background: url('../images/back.jpg');
-	height: 100%;
-	width: 100%;
-	background-size: cover;
+	padding:0;
+	background: url('../images/back.png') no-repeat center bottom fixed;
+	width:100%;
+	background-size:cover;
 }
 
 .progress-bar
@@ -14,7 +13,6 @@ body {
 	padding-top: 18px;
 	color:black;
 }
-
 #mensajes
 {
 	position: relative;
@@ -22,33 +20,6 @@ body {
 	z-index: 700;
 	text-align: center;
 	opacity:0;
-}
-#back1
-{
-	background: url('../images/back1.png');
-	z-index: 40;
-	-webkit-transition:background-position 50s linear;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-}
-#back2
-{
-	background: url('../images/back2.png');
-	z-index: 30;
-	-webkit-transition:background-position 100s linear;
-	position: absolute;
-	width: 100%;
-	height: 100%;
-}
-#back3
-{
-	background: url('../images/back3.png');
-	z-index: 20;
-	-webkit-transition:background-position 200s linear;
-	position: absolute;
-	width: 100%;
-	height: 100%;
 }
 
 
@@ -363,6 +334,7 @@ body {
 	opacity:0;
 	text-align: center;
 	z-index: 100;
+	height:75px
 }
 #audio
 {
@@ -494,6 +466,7 @@ body {
 {
 	opacity: 1;
 	background-color: #6e6e6e;
+	color:white;
 }
 
 .butMenu
@@ -552,7 +525,62 @@ body {
 	margin-top: 20px;
 }
 
+/* MODAL CARGA */
+
+#modalCarga
+{
+	width:100%;
+	height:100%;
+}
+#contCarga
+{
+	width:90%;
+	margin:auto;
+	text-align: center;
+}
+.modal-carga
+{
+	padding:0;
+	margin:auto;
+	width:100%;
+	height: 100%;
+}
+
+
+#closeCarga
+{
+	float:right;
+}
+
+.cargaArchivo
+{
+	height: 30px;
+}
+#tableFiles
+{
+}
+#tableFiles *
+{
+}
+
+#fileupload
+{
+	padding-top: 40px;
+	border-top: 2px solid #494949;
+}
+
+#titCarga
+{
+	color:#1077f4;
+	font-size: 30px;
+	padding:10px 0;
+}
+
 /* FITXERS */
+#llistaFitx>:first-child
+{
+	margin-top:0;
+}
 #llistaFitx li
 {
 	width: 100%;
@@ -605,14 +633,7 @@ body {
 	width: 100%;
 }
 
-#cont
-{
-	height: 550px;
-	width: 100%;
-	text-align: center;
-	z-index: 100;
-	position: absolute;
-}
+
 
 /* NAVEGACIO*/
 
@@ -629,15 +650,35 @@ body {
 	height: 25px;
 }
 
+#carpActual
+{
+	float:left;
+	margin-left: 18%;
+	width:75%;
+	font-size: 25px;
+	color:#191e38;
+	text-align: center;
+	margin-bottom:15px; 
+	font-weight: bold;
+}
 
 #fitx
 {
 	float:left;
 	margin-left: 23%;
 	width:75%;
-	height: 500px;
-	overflow: scroll;
+	height: 450px;
 }
+
+#cont
+{
+	height: 600px;
+	width: 100%;
+	text-align: center;
+	z-index: 100;
+	position: absolute;
+}
+
 .spanNomNav
 {
 	float:left;
@@ -695,12 +736,20 @@ body {
 	border-radius: 4px;
 	float:left;
 }
-#fileUpload
-{
-	display:none;
-}
 
 /* D&D*/
+/*
+#jQ-menu span.hoverBar
+{
+	color:#4D2A9B;
+}
+
+#jQ-menu span.activeBar
+{
+	color:#4D2A9B;
+}
+*/
+
 #llistaFitx .active
 {
 	background: none;
@@ -756,6 +805,7 @@ body {
 	width:20%;
 	height: 500px;
 	background-color: rgba(255,255,255,0.6);
+	z-index: 100;
 }
 .folder
 {
@@ -788,15 +838,67 @@ body {
 {
 }
 
+
+
+@media(max-width: 1121){
+	#infoEstado
+	{
+		float:none;
+		position: relative;
+		margin:7px auto;
+		width:90%;
+		boz-sizing:border-box;
+	}
+
+	#estado
+	{
+		float:none;
+		position: relative;
+		margin:7px auto;
+		width:90%;
+		boz-sizing:border-box;
+	}
+	#atras
+	{
+		float:left;
+		clear: both;
+	}
+	#controls
+	{
+		width:100%;
+		margin:10px 0;
+		height: 190px;
+	}
+	.controls
+	{
+		margin:0 20px;
+	}
+	.homeContr
+	{
+		margin-top: 10px;
+	}
+	#cont
+	{
+		height: 600px;
+	}
+	#fitx
+	{
+		height: 360px;
+	}
+	#jQ-menu
+	{
+		height: 410px;
+	}
+}
+
 @media(max-width: 991px){
 	#fitx
 	{
 		float:left;
 		width:90%;
 		/*height: 330px;*/
-		height: 100%;
+		height: 410px;
 		margin-left: 30px;
-		overflow: scroll;
 	}
 	#jQ-menu
 	{
@@ -811,25 +913,42 @@ body {
 		float:left;
 		width:30px;
 		background-color: green;
-		height: 550px;
+		height: 410px;
 	}
-	#atras
-	{
-		float:left;
-		clear: both;
-	}
-	#controls
-	{
-		width:100%;
-		margin:25px 0;
-		height: 150px;
-	}
+	
 	#cont
 	{
 		height: 100%
 	}
-
-}
+	#tableFiles
+	{
+		width:100%;
+		margin: auto;
+	}
 
 @media(max-width: 767px){
+}
+
+@media(max-width: 678px){
+
+	#controls
+	{
+		height: 250px;
+	}
+	#cont
+	{
+		height: 615px;
+	}
+	#menu-tab
+	{
+		height: 300px;
+	}
+	#fitx
+	{
+		height: 350px;
+	}
+	#jQ-menu
+	{
+		height: 350px;
+	}
 }
